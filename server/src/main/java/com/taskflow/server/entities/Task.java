@@ -1,5 +1,7 @@
 package com.taskflow.server.entities;
 
+import com.taskflow.server.enums.TaskPriority;
+import com.taskflow.server.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,14 +43,3 @@ public class Task {
 
 }
 
-enum TaskPriority {
-    LOW,
-    MEDIUM,
-    HIGH
-}
-
-enum TaskStatus {
-    TO_DO,
-    IN_PROGRESS,
-    DONE
-}
