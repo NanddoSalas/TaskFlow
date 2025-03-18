@@ -67,9 +67,9 @@ Google takes care of this but it's necessary to send the ID Token (JWT) provided
 
 ### 5.3 Task Endpoints
 
-| Method | Endpoint           | Description         |
-| ------ | ------------------ | ------------------- |
-| GET    | /boards/{id}/tasks | Get tasks for board |
-| POST   | /boards/{id}/tasks | Create a new task   |
-| PUT    | /tasks/{id}        | Update task status  |
-| DELETE | /tasks/{id}        | Delete task         |
+| Method | Endpoint                | Description         |
+| ------ | ----------------------- | ------------------- |
+| GET    | /boards/{id}/tasks      | Get tasks for board |
+| POST   | /boards/{id}/tasks      | Create a new task   |
+| PUT    | /boards/{id}/tasks/{id} | Update task status  |
+| DELETE | /boards/{id}/tasks/{id} | Delete task         |
