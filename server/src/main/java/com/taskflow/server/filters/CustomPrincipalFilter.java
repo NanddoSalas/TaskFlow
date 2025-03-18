@@ -36,7 +36,7 @@ public class CustomPrincipalFilter extends OncePerRequestFilter {
             User user = userService.loadOrCrateUser(sub, name, email, picture);
 
             SecurityContext newContext = SecurityContextHolder.createEmptyContext();
-            Authentication newAuthentication = new TestingAuthenticationToken(user, null);
+            Authentication newAuthentication = new TestingAuthenticationToken(user, "", "ROLE_USER");
             newContext.setAuthentication(newAuthentication);
 
             SecurityContextHolder.setContext(newContext);
