@@ -5,6 +5,7 @@ import com.taskflow.server.enums.TaskPriority;
 import com.taskflow.server.enums.TaskStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -19,9 +20,11 @@ public class TaskForm {
     private String description;
 
     @NotNull
+    @Pattern(regexp = "LOW|MEDIUM|HIGH", message = "Invalid value. Must match one of: LOW|MEDIUM|HIGH")
     private TaskPriority priority;
 
     @NotNull
+    @Pattern(regexp = "TO_DO|IN_PROGRESS|DONE", message = "Invalid value. Must match one of: TO_DO IN_PROGRESS DONE")
     private TaskStatus status;
 
     public Task getTask() {
