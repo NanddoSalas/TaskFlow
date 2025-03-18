@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "boards")
@@ -30,9 +28,6 @@ public class Board {
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime creationDate;
-
-//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Task> tasks = new ArrayList<>();
 
     public BoardDTO toDTO() {
         BoardDTO boardDTO = new BoardDTO();
