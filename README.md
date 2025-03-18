@@ -21,13 +21,14 @@ todo: write motivation
 
 ### 4.1 User Table
 
-| Field         | Type      | Description              |
-| ------------- | --------- | ------------------------ |
-| id            | Integer   | Unique identifier        |
-| name          | String    | User name                |
-| email         | String    | User email               |
-| google_id     | String    | Google unique identifier |
-| creation_date | Timestamp | Creation date            |
+| Field         | Type      | Description                |
+| ------------- | --------- | -------------------------- |
+| id            | Integer   | Unique identifier          |
+| name          | String    | User name                  |
+| email         | String    | User email                 |
+| picture       | String    | User profile picture (url) |
+| google_id     | String    | Google unique identifier   |
+| creation_date | Timestamp | Creation date              |
 
 ### 4.2 Board Table
 
