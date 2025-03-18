@@ -27,9 +27,7 @@ public class CustomPrincipalFilter extends OncePerRequestFilter {
 
         Authentication authentication = context.getAuthentication();
 
-        if  (authentication.getPrincipal() instanceof Jwt) {
-            Jwt jwt = (Jwt) authentication.getPrincipal();
-
+        if  (authentication.getPrincipal() instanceof Jwt jwt) {
             String sub = jwt.getSubject();
             String name = jwt.getClaimAsString("name");
             String email = jwt.getClaimAsString("email");
