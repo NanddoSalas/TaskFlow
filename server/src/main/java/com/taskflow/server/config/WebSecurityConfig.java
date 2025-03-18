@@ -28,6 +28,9 @@ public class WebSecurityConfig {
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .sessionManagement(
                         (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated()
+                )
                 .addFilterAfter(new CustomPrincipalFilter(userService), AnonymousAuthenticationFilter.class);
 
         return http.build();
