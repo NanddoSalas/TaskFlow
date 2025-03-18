@@ -1,5 +1,6 @@
 package com.taskflow.server.entities;
 
+import com.taskflow.server.dtos.TaskDTO;
 import com.taskflow.server.enums.TaskPriority;
 import com.taskflow.server.enums.TaskStatus;
 import jakarta.persistence.*;
@@ -40,6 +41,19 @@ public class Task {
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime creationDate;
+
+    public TaskDTO toDTO() {
+        TaskDTO taskDTO = new TaskDTO();
+
+        taskDTO.setId(id);
+        taskDTO.setTitle(title);
+        taskDTO.setDescription(description);
+        taskDTO.setPriority(priority);
+        taskDTO.setStatus(status);
+        taskDTO.setCreationDate(creationDate);
+
+        return taskDTO;
+    }
 
 }
 

@@ -25,7 +25,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column()
     private String picture;
 
     @Column(nullable = false, unique = true)
@@ -35,7 +35,7 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime creationDate;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Board> boards = new ArrayList<>();
+//    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Board> boards = new ArrayList<>();
 
 }

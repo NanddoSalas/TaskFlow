@@ -1,5 +1,6 @@
 package com.taskflow.server.entities;
 
+import com.taskflow.server.dtos.BoardDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,16 @@ public class Board {
     @Column(nullable = false)
     private LocalDateTime creationDate;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tasks = new ArrayList<>();
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Task> tasks = new ArrayList<>();
+
+    public BoardDTO toDTO() {
+        BoardDTO boardDTO = new BoardDTO();
+
+        boardDTO.setId(id);
+        boardDTO.setName(name);
+        boardDTO.setCreationDate(creationDate);
+
+        return boardDTO;
+    }
 }
