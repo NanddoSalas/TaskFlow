@@ -5,7 +5,7 @@ import com.taskflow.server.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -37,7 +37,7 @@ public class Task {
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime creationDate;
 

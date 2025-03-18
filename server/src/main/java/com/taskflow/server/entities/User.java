@@ -3,7 +3,7 @@ package com.taskflow.server.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String googleId;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime creationDate;
 
