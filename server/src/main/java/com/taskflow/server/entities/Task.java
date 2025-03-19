@@ -28,8 +28,8 @@ public class Task {
     @Column(nullable = false)
     private LocalDateTime creationDate;
 
-    @Column(nullable = false)
-    private Long position;
+    @Column(nullable = false, unique = true)
+    private long position;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", nullable = false, insertable = false, updatable = false)
