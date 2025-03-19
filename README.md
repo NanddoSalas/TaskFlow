@@ -36,20 +36,30 @@ todo: write motivation
 | ------------- | --------- | ----------------------- |
 | id            | Integer   | Unique identifier       |
 | name          | String    | Board name              |
-| owner_id      | Integer   | User who owns the board |
 | creation_date | Timestamp | Creation date           |
+| owner         | User      | User who owns the board |
 
-### 4.3 Task Table
+### 4.3 Columns Table
 
-| Field         | Type      | Description                            |
-| ------------- | --------- | -------------------------------------- |
-| id            | Integer   | Unique identifier                      |
-| title         | String    | Task title                             |
-| description   | Text      | Task details                           |
-| priority      | Enum      | Task priority (High, Medium, Low)      |
-| status        | Enum      | Task status (To Do, In Progress, Done) |
-| board_id      | Integer   | Associated board                       |
-| creation_date | Timestamp | Creation date                          |
+| Field         | Type      | Description           |
+| ------------- | --------- | --------------------- |
+| id            | Integer   | Unique identifier     |
+| name          | String    | Column name           |
+| creation_date | Timestamp | Creation date         |
+| position      | Long      | Position in the board |
+| board         | Board     | Associated board      |
+
+### 4.4 Task Table
+
+| Field         | Type      | Description            |
+| ------------- | --------- | ---------------------- |
+| id            | Integer   | Unique identifier      |
+| title         | String    | Task title             |
+| description   | Text      | Task details           |
+| creation_date | Timestamp | Creation date          |
+| position      | Long      | Position in the column |
+| board         | Board     | Associated board       |
+| column        | Column    | Associated column      |
 
 ## 5. API Design
 
@@ -59,17 +69,27 @@ Google takes care of this but it's necessary to send the ID Token (JWT) provided
 
 ### 5.2 Board Endpoints
 
-| Method | Endpoint     | Description         |
-| ------ | ------------ | ------------------- |
-| GET    | /boards      | Get all user boards |
-| POST   | /boards      | Create a new board  |
-| DELETE | /boards/{id} | Delete a board      |
+| Method | Endpoint          | Description           |
+| ------ | ----------------- | --------------------- |
+| GET    | /boards           | Get all user boards   |
+| POST   | /boards           | Create a new board    |
+| PATCH  | /boards/{boardId} | Update a board (name) |
+| DELETE | /boards/{boardId} | Delete a board        |
 
-### 5.3 Task Endpoints
+### 5.3 Column Endpoints
 
-| Method | Endpoint                | Description         |
-| ------ | ----------------------- | ------------------- |
-| GET    | /boards/{id}/tasks      | Get tasks for board |
-| POST   | /boards/{id}/tasks      | Create a new task   |
-| PUT    | /boards/{id}/tasks/{id} | Update task status  |
-| DELETE | /boards/{id}/tasks/{id} | Delete task         |
+| Method | Endpoint                             | Description                      |
+| ------ | ------------------------------------ | -------------------------------- |
+| GET    | /boards/{boardId}/columns            | Get all columns from a boards    |
+| POST   | /boards/{boardId}/columns            | Create a new column              |
+| PATCH  | /boards/{boardId}/columns/{columnId} | Update a column (name, position) |
+| DELETE | /boards/{boardId}/columns/{columnId} | Delete a column                  |
+
+### 5.4 Task Endpoints
+
+| Method | Endpoint                                            | Description                                          |
+| ------ | --------------------------------------------------- | ---------------------------------------------------- |
+| GET    | /boards/{boardId}/tasks                             | Get all tasks from a board                           |
+| POST   | /boards/{boardId}/columns/{columnId}/tasks          | Create a new task                                    |
+| PATCH  | /boards/{boardId}/columns/{columnId}/tasks/{taskId} | Update a task (title, description, position, column) |
+| DELETE | /boards/{boardId}/columns/{columnId}/tasks/{taskId} | Delete a task                                        |
