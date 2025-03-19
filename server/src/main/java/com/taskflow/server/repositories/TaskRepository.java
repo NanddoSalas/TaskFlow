@@ -8,8 +8,12 @@ import java.util.Optional;
 
 public interface TaskRepository extends CrudRepository<Task, Integer> {
 
-    public List<Task> findAllByBoardId(int boardId);
-    public Optional<Task> findTaskByIdAndBoardId(int taskId, int boardId);
-    public void deleteByIdAndBoardId(int taskId, int boardId);
+    List<Task> findAllByBoardId(int boardId);
+
+    Optional<Task> findByIdAndBoardIdAndGroupId(int taskId, int boardId, int groupId);
+
+    Optional<Task> findFirstByOrderByPositionDesc();
+
+    void deleteByIdAndBoardIdAndGroupId(int taskId, int boardId, int groupId);
 
 }

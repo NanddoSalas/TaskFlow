@@ -8,10 +8,8 @@ import java.util.Optional;
 
 public interface BoardRepository extends CrudRepository<Board, Integer> {
 
-    public List<Board> findAllByOwnerId(int ownerId);
+    List<Board> findAllByOwnerId(int ownerId);
 
-    public Optional<Board> findByIdAndOwnerId(int id, int ownerId);
-
-    public void deleteBoardByIdAndOwnerId(int boardId, int ownerId);
+    Optional<Board> findByIdAndOwnerId(int boardId, int ownerId);
 
 }
