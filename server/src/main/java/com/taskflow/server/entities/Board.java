@@ -21,13 +21,16 @@ public class Board {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
-
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime creationDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false, insertable = false, updatable = false)
+    private User owner;
+
+    @Column(name = "owner_id", nullable = false)
+    private int ownerId;
 
     public BoardDTO toDTO() {
         BoardDTO boardDTO = new BoardDTO();

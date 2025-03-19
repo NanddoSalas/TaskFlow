@@ -26,21 +26,26 @@ public class Task {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TaskPriority priority;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TaskStatus status;
-
-    @ManyToOne
-    @JoinColumn(name = "board_id", nullable = false)
-    private Board board;
-
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime creationDate;
+
+    @Column(nullable = false)
+    private Long position;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", nullable = false, insertable = false, updatable = false)
+    private Board board;
+
+    @Column(name = "board_id", nullable = false)
+    private int boardId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", nullable = false, insertable = false, updatable = false)
+    private Group group;
+
+    @Column(name = "group_id", nullable = false)
+    private int groupId;
 
     public TaskDTO toDTO() {
         TaskDTO taskDTO = new TaskDTO();
@@ -48,9 +53,9 @@ public class Task {
         taskDTO.setId(id);
         taskDTO.setTitle(title);
         taskDTO.setDescription(description);
-        taskDTO.setPriority(priority);
-        taskDTO.setStatus(status);
         taskDTO.setCreationDate(creationDate);
+        taskDTO.setPosition(position);
+        taskDTO.setGroupId(groupId);
 
         return taskDTO;
     }
