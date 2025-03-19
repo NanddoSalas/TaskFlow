@@ -39,27 +39,27 @@ todo: write motivation
 | creation_date | Timestamp | Creation date           |
 | owner         | User      | User who owns the board |
 
-### 4.3 Columns Table
+### 4.3 Group Table
 
 | Field         | Type      | Description           |
 | ------------- | --------- | --------------------- |
 | id            | Integer   | Unique identifier     |
-| name          | String    | Column name           |
+| name          | String    | Group name            |
 | creation_date | Timestamp | Creation date         |
 | position      | Long      | Position in the board |
 | board         | Board     | Associated board      |
 
 ### 4.4 Task Table
 
-| Field         | Type      | Description            |
-| ------------- | --------- | ---------------------- |
-| id            | Integer   | Unique identifier      |
-| title         | String    | Task title             |
-| description   | Text      | Task details           |
-| creation_date | Timestamp | Creation date          |
-| position      | Long      | Position in the column |
-| board         | Board     | Associated board       |
-| column        | Column    | Associated column      |
+| Field         | Type      | Description           |
+| ------------- | --------- | --------------------- |
+| id            | Integer   | Unique identifier     |
+| title         | String    | Task title            |
+| description   | Text      | Task details          |
+| creation_date | Timestamp | Creation date         |
+| position      | Long      | Position in the group |
+| board         | Board     | Associated board      |
+| group         | Group     | Associated group      |
 
 ## 5. API Design
 
@@ -78,18 +78,18 @@ Google takes care of this but it's necessary to send the ID Token (JWT) provided
 
 ### 5.3 Column Endpoints
 
-| Method | Endpoint                             | Description                      |
-| ------ | ------------------------------------ | -------------------------------- |
-| GET    | /boards/{boardId}/columns            | Get all columns from a boards    |
-| POST   | /boards/{boardId}/columns            | Create a new column              |
-| PATCH  | /boards/{boardId}/columns/{columnId} | Update a column (name, position) |
-| DELETE | /boards/{boardId}/columns/{columnId} | Delete a column                  |
+| Method | Endpoint                           | Description                     |
+| ------ | ---------------------------------- | ------------------------------- |
+| GET    | /boards/{boardId}/groups           | Get all groups from a boards    |
+| POST   | /boards/{boardId}/groups           | Create a new group              |
+| PATCH  | /boards/{boardId}/groups/{groupId} | Update a group (name, position) |
+| DELETE | /boards/{boardId}/groups/{groupId} | Delete a group                  |
 
 ### 5.4 Task Endpoints
 
-| Method | Endpoint                                            | Description                                          |
-| ------ | --------------------------------------------------- | ---------------------------------------------------- |
-| GET    | /boards/{boardId}/tasks                             | Get all tasks from a board                           |
-| POST   | /boards/{boardId}/columns/{columnId}/tasks          | Create a new task                                    |
-| PATCH  | /boards/{boardId}/columns/{columnId}/tasks/{taskId} | Update a task (title, description, position, column) |
-| DELETE | /boards/{boardId}/columns/{columnId}/tasks/{taskId} | Delete a task                                        |
+| Method | Endpoint                                          | Description                                         |
+| ------ | ------------------------------------------------- | --------------------------------------------------- |
+| GET    | /boards/{boardId}/tasks                           | Get all tasks from a board                          |
+| POST   | /boards/{boardId}/groups/{groupId}/tasks          | Create a new task                                   |
+| PATCH  | /boards/{boardId}/groups/{groupId}/tasks/{taskId} | Update a task (title, description, position, group) |
+| DELETE | /boards/{boardId}/groups/{groupId}/tasks/{taskId} | Delete a task                                       |
