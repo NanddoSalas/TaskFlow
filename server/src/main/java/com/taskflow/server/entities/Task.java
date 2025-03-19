@@ -1,8 +1,6 @@
 package com.taskflow.server.entities;
 
 import com.taskflow.server.dtos.TaskDTO;
-import com.taskflow.server.enums.TaskPriority;
-import com.taskflow.server.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -61,4 +59,3 @@ public class Task {
     }
 
 }
-
