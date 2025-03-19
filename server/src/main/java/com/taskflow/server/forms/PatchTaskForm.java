@@ -13,6 +13,6 @@ public class PatchTaskForm {
 
     private Long position;
 
-    private int columnId;
+    private Integer groupId;
 
 }
