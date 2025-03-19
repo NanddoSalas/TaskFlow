@@ -26,4 +26,14 @@ public class GlobalControllerExceptionHandler {
 
         return ResponseDTO.badRequest(errors);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseDTO> handleGenericMessageException(Exception ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        errors.put("message", ex.getMessage());
+
+        return ResponseDTO.badRequest(errors);
+    }
+
 }
