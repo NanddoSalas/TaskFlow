@@ -30,12 +30,12 @@ export const NavBoardItem: React.FC<NavBoardItemProps> = ({ id }) => {
 
   const handleRename = () => {
     // todo: implement funcion
-    alert(`rename ${id}`);
+    alert(`rename ${board.name}`);
   };
 
   const handleDelete = () => {
     // todo: implement funcion
-    alert(`delete ${id}`);
+    alert(`delete ${board.name}`);
   };
 
   return (

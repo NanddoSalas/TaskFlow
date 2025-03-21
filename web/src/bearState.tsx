@@ -6,17 +6,17 @@ export interface State {
   idToken: string | null;
   user: User | null;
   selectedBoard: number | null;
-  boardsId: number[] | null;
+  boardIds: number[] | null;
   boards: {
     [boardId: number]: {
       board: Board;
-      groupsId: number[] | null;
+      groupIds: number[] | null;
     };
   };
   groups: {
     [groupId: number]: {
       group: Group;
-      tasksId: number[] | null;
+      taskIds: number[] | null;
     };
   };
   tasks: {

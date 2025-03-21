@@ -11,7 +11,7 @@ export const fakeData: State = {
     creationDate: '2025-03-21T10:00:00Z',
   },
   selectedBoard: null,
-  boardsId: [1, 2, 3, 4],
+  boardIds: [1, 2, 3, 4],
   boards: {
     1: {
       board: {
@@ -19,7 +19,7 @@ export const fakeData: State = {
         name: 'Project Alpha',
         creationDate: '2025-03-20T12:00:00Z',
       },
-      groupsId: [101, 102, 103, 104],
+      groupIds: [101, 102, 103, 104],
     },
     2: {
       board: {
@@ -27,7 +27,7 @@ export const fakeData: State = {
         name: 'Project Beta',
         creationDate: '2025-03-18T09:00:00Z',
       },
-      groupsId: [105, 106, 107],
+      groupIds: [105, 106, 107],
     },
     3: {
       board: {
@@ -35,7 +35,7 @@ export const fakeData: State = {
         name: 'Project Gamma',
         creationDate: '2025-03-15T14:00:00Z',
       },
-      groupsId: [108, 109],
+      groupIds: [108, 109],
     },
     4: {
       board: {
@@ -43,7 +43,7 @@ export const fakeData: State = {
         name: 'Project Delta',
         creationDate: '2025-03-10T11:00:00Z',
       },
-      groupsId: [],
+      groupIds: [],
     },
   },
   groups: {
@@ -54,7 +54,7 @@ export const fakeData: State = {
         creationDate: '2025-03-20T12:00:00Z',
         position: BigInt(0),
       },
-      tasksId: [201, 202],
+      taskIds: [201, 202],
     },
     102: {
       group: {
@@ -63,7 +63,7 @@ export const fakeData: State = {
         creationDate: '2025-03-20T12:10:00Z',
         position: BigInt(10000),
       },
-      tasksId: [203, 204],
+      taskIds: [203, 204],
     },
     103: {
       group: {
@@ -72,7 +72,7 @@ export const fakeData: State = {
         creationDate: '2025-03-20T12:20:00Z',
         position: BigInt(20000),
       },
-      tasksId: [205, 206],
+      taskIds: [205, 206],
     },
     104: {
       group: {
@@ -81,7 +81,7 @@ export const fakeData: State = {
         creationDate: '2025-03-20T12:30:00Z',
         position: BigInt(30000),
       },
-      tasksId: [207],
+      taskIds: [207],
     },
     105: {
       group: {
@@ -90,7 +90,7 @@ export const fakeData: State = {
         creationDate: '2025-03-18T09:00:00Z',
         position: BigInt(0),
       },
-      tasksId: [],
+      taskIds: [],
     },
     106: {
       group: {
@@ -99,7 +99,7 @@ export const fakeData: State = {
         creationDate: '2025-03-18T09:10:00Z',
         position: BigInt(10000),
       },
-      tasksId: [],
+      taskIds: [],
     },
     107: {
       group: {
@@ -108,7 +108,7 @@ export const fakeData: State = {
         creationDate: '2025-03-18T09:20:00Z',
         position: BigInt(20000),
       },
-      tasksId: [],
+      taskIds: [],
     },
     108: {
       group: {
@@ -117,7 +117,7 @@ export const fakeData: State = {
         creationDate: '2025-03-15T14:00:00Z',
         position: BigInt(0),
       },
-      tasksId: [],
+      taskIds: [],
     },
     109: {
       group: {
@@ -126,7 +126,7 @@ export const fakeData: State = {
         creationDate: '2025-03-15T14:10:00Z',
         position: BigInt(10000),
       },
-      tasksId: [],
+      taskIds: [],
     },
   },
   tasks: {

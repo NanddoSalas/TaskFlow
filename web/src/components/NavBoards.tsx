@@ -7,7 +7,7 @@ import { useBearStore } from '../bearState';
 import { NavBoardItem } from './NavBoardItem';
 
 export const NavBoards: React.FC = () => {
-  const boardsId = useBearStore((state) => state.boardsId);
+  const boardIds = useBearStore((state) => state.boardIds);
 
   // todo: fetch boards
 
@@ -16,8 +16,8 @@ export const NavBoards: React.FC = () => {
       <SidebarGroupLabel>Boards</SidebarGroupLabel>
 
       <SidebarMenu>
-        {boardsId ? (
-          boardsId.map((id) => <NavBoardItem id={id} />)
+        {boardIds ? (
+          boardIds.map((id) => <NavBoardItem id={id} />)
         ) : (
           // todo: implement a loading skeleton
           <div></div>
