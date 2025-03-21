@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface GroupRepository extends CrudRepository<Group, Integer> {
 
-    List<Group> findAllByBoardId(int boardId);
+    List<Group> findAllByBoardIdOrderByPositionAsc(int boardId);
 
     Optional<Group> findByIdAndBoardId(int groupId, int boardId);
 

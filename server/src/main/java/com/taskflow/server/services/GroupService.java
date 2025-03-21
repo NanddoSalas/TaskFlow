@@ -23,7 +23,7 @@ public class GroupService {
     public List<GroupDTO> retrieveGroups(int userId, int boardId) throws Exception {
         boardRepository.findByIdAndOwnerId(boardId, userId).orElseThrow(() -> new Exception("Board doesn't exist"));
 
-        return groupRepository.findAllByBoardId(boardId).stream().map(Group::toDTO).toList();
+        return groupRepository.findAllByBoardIdOrderByPositionAsc(boardId).stream().map(Group::toDTO).toList();
     }
 
     public GroupDTO createGroup(int userId, int boardId, CreateGroupForm form) throws Exception {
@@ -48,7 +48,8 @@ public class GroupService {
 
     public GroupDTO updateGroup(int userId, int boardId, int groupId, PatchGroupForm form) throws Exception {
         boardRepository.findByIdAndOwnerId(boardId, userId).orElseThrow(() -> new Exception("Board doesn't exist"));
-        Group group = groupRepository.findByIdAndBoardId(groupId, boardId).orElseThrow((() -> new Exception("Board doesn't exist")));
+        Group group = groupRepository.findByIdAndBoardId(groupId, boardId)
+                .orElseThrow((() -> new Exception("Board doesn't exist")));
 
         if (form.getName() != null) {
             group.setName(form.getName());

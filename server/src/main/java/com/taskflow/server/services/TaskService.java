@@ -25,7 +25,7 @@ public class TaskService {
     public List<TaskDTO> retrieveTasks(int userId, int boardId) throws Exception {
         boardRepository.findByIdAndOwnerId(boardId, userId).orElseThrow(() -> new Exception("Board doesn't exist"));
 
-        return taskRepository.findAllByBoardId(boardId).stream().map(Task::toDTO).toList();
+        return taskRepository.findAllByBoardIdOrderByPositionAsc(boardId).stream().map(Task::toDTO).toList();
     }
 
     public TaskDTO createTask(int userId, int boardId, int groupId, CreateTaskForm form) throws Exception {
@@ -54,7 +54,8 @@ public class TaskService {
     public TaskDTO updateTask(int userId, int boardId, int groupId, int taskId, PatchTaskForm form) throws Exception {
         boardRepository.findByIdAndOwnerId(boardId, userId).orElseThrow(() -> new Exception("Board doesn't exist"));
         groupRepository.findByIdAndBoardId(groupId, boardId).orElseThrow(() -> new Exception("Group doesn't exist"));
-        Task task = taskRepository.findByIdAndBoardIdAndGroupId(taskId, boardId, groupId).orElseThrow(() -> new Exception("Task doesn't exist"));
+        Task task = taskRepository.findByIdAndBoardIdAndGroupId(taskId, boardId, groupId)
+                .orElseThrow(() -> new Exception("Task doesn't exist"));
 
         if (form.getTitle() != null) {
             task.setTitle(form.getTitle());
@@ -69,7 +70,8 @@ public class TaskService {
         }
 
         if (form.getGroupId() != null) {
-            groupRepository.findByIdAndBoardId(form.getGroupId(), boardId).orElseThrow(() -> new Exception("Group doesn't exist"));
+            groupRepository.findByIdAndBoardId(form.getGroupId(), boardId)
+                    .orElseThrow(() -> new Exception("Group doesn't exist"));
             task.setGroupId(form.getGroupId());
         }
 

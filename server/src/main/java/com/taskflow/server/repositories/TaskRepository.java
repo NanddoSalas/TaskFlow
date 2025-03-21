@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface TaskRepository extends CrudRepository<Task, Integer> {
 
-    List<Task> findAllByBoardId(int boardId);
+    List<Task> findAllByBoardIdOrderByPositionAsc(int boardId);
 
     Optional<Task> findByIdAndBoardIdAndGroupId(int taskId, int boardId, int groupId);
 
