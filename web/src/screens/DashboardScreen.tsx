@@ -10,6 +10,7 @@ export const DashboardScreen = () => {
   const selectedBoard = useBearStore((state) => state.selectedBoard);
   const selectBoard = useBearStore((state) => state.selectBoard);
 
+  // todo: fix esc hot key, should be disabled when a dialog is open
   useHotkeys('esc', () => selectBoard(null));
 
   return (

@@ -1,6 +1,8 @@
 import { MoreHorizontal, Pen, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import { useBearStore } from '../bearState';
 import { classNames } from '../utils';
+import { ConfirmationDialog } from './ConfirmationDialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +25,7 @@ export const NavBoardItem: React.FC<NavBoardItemProps> = ({ id }) => {
   const board = useBearStore((state) => state.boards[id].board);
   const selectedBoard = useBearStore((state) => state.selectedBoard);
   const selectBoard = useBearStore((store) => store.selectBoard);
+  const [isOpen, setIsOpen] = useState(false);
 
   const isSelected = selectedBoard === id;
 
@@ -39,48 +42,58 @@ export const NavBoardItem: React.FC<NavBoardItemProps> = ({ id }) => {
   };
 
   return (
-    <SidebarMenuItem>
-      <SidebarMenuButton
-        asChild
-        onClick={isSelected ? () => {} : handleClick}
-        isActive={isSelected}
-      >
-        <a
-          href="#"
-          key={board.id}
-          className={classNames(
-            isSelected ? 'hover:cursor-default' : 'hover:cursor-pointer',
-          )}
+    <>
+      <ConfirmationDialog
+        title="Are you absolutely sure?"
+        description="This action cannot be undone. This will permanently delete all the groups and tasks in this board from our servers."
+        open={isOpen}
+        onOpenChange={() => setIsOpen(false)}
+        onContinue={handleDelete}
+      />
+
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          asChild
+          onClick={isSelected ? () => {} : handleClick}
+          isActive={isSelected}
         >
-          <span>{board.name}</span>
-        </a>
-      </SidebarMenuButton>
+          <a
+            href="#"
+            key={board.id}
+            className={classNames(
+              isSelected ? 'hover:cursor-default' : 'hover:cursor-pointer',
+            )}
+          >
+            <span>{board.name}</span>
+          </a>
+        </SidebarMenuButton>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <SidebarMenuAction showOnHover className={'hover:cursor-pointer'}>
-            <MoreHorizontal />
-          </SidebarMenuAction>
-        </DropdownMenuTrigger>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuAction showOnHover className={'hover:cursor-pointer'}>
+              <MoreHorizontal />
+            </SidebarMenuAction>
+          </DropdownMenuTrigger>
 
-        <DropdownMenuContent
-          className="w-32"
-          side={isMobile ? 'bottom' : 'right'}
-          align={isMobile ? 'end' : 'start'}
-        >
-          <DropdownMenuItem onClick={handleRename}>
-            <Pen className="text-muted-foreground" />
+          <DropdownMenuContent
+            className="w-32"
+            side={isMobile ? 'bottom' : 'right'}
+            align={isMobile ? 'end' : 'start'}
+          >
+            <DropdownMenuItem onClick={handleRename}>
+              <Pen className="text-muted-foreground" />
 
-            <span>Rename</span>
-          </DropdownMenuItem>
+              <span>Rename</span>
+            </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={handleDelete}>
-            <Trash2 className="text-muted-foreground" />
+            <DropdownMenuItem onClick={() => setIsOpen(true)}>
+              <Trash2 className="text-muted-foreground" />
 
-            <span>Delete</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </SidebarMenuItem>
+              <span>Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </>
   );
 };

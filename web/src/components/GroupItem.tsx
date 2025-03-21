@@ -1,6 +1,8 @@
 import { Grip, MoreHorizontal, Pen, Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import { useBearStore } from '../bearState';
 import { classNames } from '../utils';
+import { ConfirmationDialog } from './ConfirmationDialog';
 import { TaskItem } from './TaskItem';
 import { Button } from './ui/button';
 import {
@@ -16,6 +18,7 @@ interface GroupItemProps {
 
 export const GroupItem: React.FC<GroupItemProps> = ({ id }) => {
   const { group, taskIds } = useBearStore((state) => state.groups[id]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleEdit = () => {
     // todo: implement function
@@ -33,64 +36,74 @@ export const GroupItem: React.FC<GroupItemProps> = ({ id }) => {
   };
 
   return (
-    <div
-      className={classNames(
-        'flex flex-col gap-4 p-4',
-        'border shadow-sm rounded-xl',
-        'bg-neutral-50 w-88 min-w-88 h-fit',
-      )}
-    >
-      <div className="flex justify-between">
-        <Button
-          variant="ghost"
-          size="icon"
-          className={'size-7 hover:cursor-grab'}
-        >
-          <Grip />
-        </Button>
+    <>
+      <ConfirmationDialog
+        title="Are you absolutely sure?"
+        description="This action cannot be undone. This will permanently delete all the tasks in this group from our servers."
+        open={isOpen}
+        onOpenChange={() => setIsOpen(false)}
+        onContinue={handleDelete}
+      />
 
-        <span className="font-semibold">{group.name}</span>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className={'size-7 hover:cursor-pointer'}
-            >
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent className="w-32">
-            <DropdownMenuItem onClick={handleEdit}>
-              <Pen />
-              <span>Rename</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem onClick={handleDelete}>
-              <Trash2 />
-              <span>Delete</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      {taskIds?.map((taskId) => (
-        <TaskItem key={taskId} id={taskId} />
-      ))}
-
-      {/* todo: disable new task button if fetching */}
       <div
         className={classNames(
-          'flex gap-1 p-2 justify-center rounded-xl border opacity-75',
-          'hover:bg-card hover:cursor-pointer hover:shadow-sm hover:opacity-100',
+          'flex flex-col gap-4 p-4',
+          'border shadow-sm rounded-xl',
+          'bg-neutral-50 w-88 min-w-88 h-fit',
         )}
-        onClick={handleNewTask}
       >
-        <Plus />
-        <span>New Task</span>
+        <div className="flex justify-between">
+          <Button
+            variant="ghost"
+            size="icon"
+            className={'size-7 hover:cursor-grab'}
+          >
+            <Grip />
+          </Button>
+
+          <span className="font-semibold">{group.name}</span>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={'size-7 hover:cursor-pointer'}
+              >
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="w-32">
+              <DropdownMenuItem onClick={handleEdit}>
+                <Pen />
+                <span>Rename</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => setIsOpen(true)}>
+                <Trash2 />
+                <span>Delete</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {taskIds?.map((taskId) => (
+          <TaskItem key={taskId} id={taskId} />
+        ))}
+
+        {/* todo: disable new task button if fetching */}
+        <div
+          className={classNames(
+            'flex gap-1 p-2 justify-center rounded-xl border opacity-75',
+            'hover:bg-card hover:cursor-pointer hover:shadow-sm hover:opacity-100',
+          )}
+          onClick={handleNewTask}
+        >
+          <Plus />
+          <span>New Task</span>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
