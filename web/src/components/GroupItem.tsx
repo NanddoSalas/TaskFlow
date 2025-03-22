@@ -1,8 +1,10 @@
-import { Grip, MoreHorizontal, Pen, Plus, Trash2 } from 'lucide-react';
+import { Grip, MoreHorizontal, Pen, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useBearStore } from '../bearState';
 import { classNames } from '../utils';
-import { ConfirmationDialog } from './ConfirmationDialog';
+import { DeleteGroupDialog } from './DeleteGroupDialog';
+import { GroupFormDialog } from './GroupFormDialog';
+import { NewTaskButton } from './NewTaskButton';
 import { TaskItem } from './TaskItem';
 import { Button } from './ui/button';
 import {
@@ -18,31 +20,22 @@ interface GroupItemProps {
 
 export const GroupItem: React.FC<GroupItemProps> = ({ id }) => {
   const { group, taskIds } = useBearStore((state) => state.groups[id]);
-  const [isOpen, setIsOpen] = useState(false);
 
-  const handleEdit = () => {
-    // todo: implement function
-    alert(`edit ${group.name}`);
-  };
-
-  const handleDelete = () => {
-    // todo: implement function
-    alert(`delete ${group.name}`);
-  };
-
-  const handleNewTask = () => {
-    // todo: implement function
-    alert('new task');
-  };
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isGroupFormOpen, setIsGroupFormOpen] = useState(false);
 
   return (
     <>
-      <ConfirmationDialog
-        title="Are you absolutely sure?"
-        description="This action cannot be undone. This will permanently delete all the tasks in this group from our servers."
-        open={isOpen}
-        onOpenChange={() => setIsOpen(false)}
-        onContinue={handleDelete}
+      <DeleteGroupDialog
+        open={isConfirmationOpen}
+        onOpenChange={() => setIsConfirmationOpen(false)}
+        boardId={id}
+      />
+
+      <GroupFormDialog
+        open={isGroupFormOpen}
+        onOpenChange={() => setIsGroupFormOpen(false)}
+        groupId={id}
       />
 
       <div
@@ -75,12 +68,12 @@ export const GroupItem: React.FC<GroupItemProps> = ({ id }) => {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className="w-32">
-              <DropdownMenuItem onClick={handleEdit}>
+              <DropdownMenuItem onClick={() => setIsGroupFormOpen(true)}>
                 <Pen />
                 <span>Rename</span>
               </DropdownMenuItem>
 
-              <DropdownMenuItem onClick={() => setIsOpen(true)}>
+              <DropdownMenuItem onClick={() => setIsConfirmationOpen(true)}>
                 <Trash2 />
                 <span>Delete</span>
               </DropdownMenuItem>
@@ -92,17 +85,7 @@ export const GroupItem: React.FC<GroupItemProps> = ({ id }) => {
           <TaskItem key={taskId} id={taskId} />
         ))}
 
-        {/* todo: disable new task button if fetching */}
-        <div
-          className={classNames(
-            'flex gap-1 p-2 justify-center rounded-xl border opacity-75',
-            'hover:bg-card hover:cursor-pointer hover:shadow-sm hover:opacity-100',
-          )}
-          onClick={handleNewTask}
-        >
-          <Plus />
-          <span>New Task</span>
-        </div>
+        <NewTaskButton />
       </div>
     </>
   );

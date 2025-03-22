@@ -2,7 +2,8 @@ import { MoreHorizontal, Pen, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useBearStore } from '../bearState';
 import { classNames } from '../utils';
-import { ConfirmationDialog } from './ConfirmationDialog';
+import { BoardFormDialog } from './BoardFormDialog';
+import { DeleteBoardDialog } from './DeleteBoardDialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,30 +26,26 @@ export const NavBoardItem: React.FC<NavBoardItemProps> = ({ id }) => {
   const board = useBearStore((state) => state.boards[id].board);
   const selectedBoard = useBearStore((state) => state.selectedBoard);
   const selectBoard = useBearStore((store) => store.selectBoard);
-  const [isOpen, setIsOpen] = useState(false);
+
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
 
   const isSelected = selectedBoard === id;
 
   const handleClick = () => selectBoard(id);
 
-  const handleRename = () => {
-    // todo: implement funcion
-    alert(`rename ${board.name}`);
-  };
-
-  const handleDelete = () => {
-    // todo: implement funcion
-    alert(`delete ${board.name}`);
-  };
-
   return (
     <>
-      <ConfirmationDialog
-        title="Are you absolutely sure?"
-        description="This action cannot be undone. This will permanently delete all the groups and tasks in this board from our servers."
-        open={isOpen}
-        onOpenChange={() => setIsOpen(false)}
-        onContinue={handleDelete}
+      <DeleteBoardDialog
+        open={isConfirmationOpen}
+        onOpenChange={() => setIsConfirmationOpen(false)}
+        boardId={id}
+      />
+
+      <BoardFormDialog
+        open={isBoardFormOpen}
+        onOpenChange={() => setIsBoardFormOpen(false)}
+        boardId={id}
       />
 
       <SidebarMenuItem>
@@ -80,13 +77,13 @@ export const NavBoardItem: React.FC<NavBoardItemProps> = ({ id }) => {
             side={isMobile ? 'bottom' : 'right'}
             align={isMobile ? 'end' : 'start'}
           >
-            <DropdownMenuItem onClick={handleRename}>
+            <DropdownMenuItem onClick={() => setIsBoardFormOpen(true)}>
               <Pen className="text-muted-foreground" />
 
               <span>Rename</span>
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => setIsOpen(true)}>
+            <DropdownMenuItem onClick={() => setIsConfirmationOpen(true)}>
               <Trash2 className="text-muted-foreground" />
 
               <span>Delete</span>

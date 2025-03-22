@@ -6,25 +6,31 @@ import {
   SidebarMenu,
 } from '@/components/ui/sidebar';
 import { PlusIcon } from 'lucide-react';
+import { useState } from 'react';
+import { BoardFormDialog } from './BoardFormDialog';
 import { NavActionItem } from './NavActionItem';
 
 export const NavActions: React.FC = () => {
-  const handleNewBoard = () => {
-    // todo: implement function
-    alert('new board');
-  };
+  const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Actions</SidebarGroupLabel>
+    <>
+      <BoardFormDialog
+        open={isBoardFormOpen}
+        onOpenChange={() => setIsBoardFormOpen(false)}
+      />
 
-      <SidebarMenu>
-        <NavActionItem
-          name="New Board"
-          icon={PlusIcon}
-          onClick={handleNewBoard}
-        />
-      </SidebarMenu>
-    </SidebarGroup>
+      <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+        <SidebarGroupLabel>Actions</SidebarGroupLabel>
+
+        <SidebarMenu>
+          <NavActionItem
+            name="New Board"
+            icon={PlusIcon}
+            onClick={() => setIsBoardFormOpen(true)}
+          />
+        </SidebarMenu>
+      </SidebarGroup>
+    </>
   );
 };
