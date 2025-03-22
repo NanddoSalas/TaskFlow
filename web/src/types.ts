@@ -25,4 +25,5 @@ export interface Task {
   description: string;
   creationDate: string;
   position: bigint;
+  groupId: number;
 }

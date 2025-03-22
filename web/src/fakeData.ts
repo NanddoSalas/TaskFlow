@@ -136,6 +136,7 @@ export const fakeData: State = {
       description: 'Outline project goals and deliverables.',
       creationDate: '2025-03-20T12:05:00Z',
       position: BigInt(0),
+      groupId: 101,
     },
     202: {
       id: 202,
@@ -143,6 +144,7 @@ export const fakeData: State = {
       description: 'Collect input from stakeholders.',
       creationDate: '2025-03-20T12:10:00Z',
       position: BigInt(10000),
+      groupId: 101,
     },
     203: {
       id: 203,
@@ -150,6 +152,7 @@ export const fakeData: State = {
       description: 'Initialize Git repository and CI/CD.',
       creationDate: '2025-03-20T12:15:00Z',
       position: BigInt(0),
+      groupId: 102,
     },
     204: {
       id: 204,
@@ -157,6 +160,7 @@ export const fakeData: State = {
       description: 'Create ER diagrams and plan database tables.',
       creationDate: '2025-03-20T12:20:00Z',
       position: BigInt(10000),
+      groupId: 102,
     },
     205: {
       id: 205,
@@ -164,6 +168,7 @@ export const fakeData: State = {
       description: 'Secure the API with JWT authentication.',
       creationDate: '2025-03-20T12:25:00Z',
       position: BigInt(0),
+      groupId: 103,
     },
     206: {
       id: 206,
@@ -171,6 +176,7 @@ export const fakeData: State = {
       description: 'Develop RESTful endpoints for user management.',
       creationDate: '2025-03-20T12:30:00Z',
       position: BigInt(10000),
+      groupId: 103,
     },
     207: {
       id: 207,
@@ -178,6 +184,7 @@ export const fakeData: State = {
       description: 'Launch the project on cloud hosting.',
       creationDate: '2025-03-20T12:35:00Z',
       position: BigInt(0),
+      groupId: 104,
     },
   },
 };
