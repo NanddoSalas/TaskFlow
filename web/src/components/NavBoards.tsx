@@ -17,7 +17,7 @@ export const NavBoards: React.FC = () => {
 
       <SidebarMenu>
         {boardIds ? (
-          boardIds.map((id) => <NavBoardItem id={id} />)
+          boardIds.map((id) => <NavBoardItem id={id} key={id} />)
         ) : (
           // todo: implement a loading skeleton
           <div></div>
