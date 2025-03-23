@@ -7,11 +7,13 @@ import {
 } from '@/components/ui/sidebar';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
+import { useBearStore } from '../bearState';
 import { BoardFormDialog } from './BoardFormDialog';
 import { NavActionItem } from './NavActionItem';
 
 export const NavActions: React.FC = () => {
   const [isBoardFormOpen, setIsBoardFormOpen] = useState(false);
+  const boardIds = useBearStore((state) => state.boardIds);
 
   return (
     <>
@@ -28,6 +30,7 @@ export const NavActions: React.FC = () => {
             name="New Board"
             icon={PlusIcon}
             onClick={() => setIsBoardFormOpen(true)}
+            disabled={boardIds === null}
           />
         </SidebarMenu>
       </SidebarGroup>
