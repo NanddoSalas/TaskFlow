@@ -1,25 +1,33 @@
 # TaskFlow - A Task Management App
 
-## 1. Overview
+## Overview
 
 **TaskFlow** is a lightweight task management web application that allows users to create, organize, and track tasks in an intuitive kanban-style interface.
 
-## 2. Problem Statement and Motivation
+### Features
 
-People need a simple, intuitive, and fast way to manage personal tasks without the complexity of enterprise tools like Jira or Trello, so TaskFlow provide users with an easy-to-use task board where they can add, edit, move, and delete tasks.
+- **Google Authentication** - Users can sign up and log in using their Google accounts.
+- **Boards Management** - Create, update, and delete boards.
+- **Groups Management** - Add, edit, move, and delete groups within a board.
+- **Tasks Management** - Create, update, move, and delete tasks within groups.
+- **Drag-and-Drop** - Implement drag-and-drop functionality for seamless task movement.
 
-todo: write motivation
+### Motivation
 
-## 3. System Architecture
+This Task Management app was built as a personal project to enhance my skills in both frontend and backend development. By using React and TypeScript for the frontend, and Java with Spring Boot for the backend, I aimed to gain hands-on experience in developing a full-stack application.
+
+Inspired by platforms like Trello, this app allows users to manage tasks effectively through a Kanban-style board. The project also serves as a practical addition to my self-taught Software Engineer portfolio, demonstrating my ability to design, implement, and deploy scalable applications while integrating authentication and state management.
+
+## System Architecture
 
 - **Frontend**: Single Page Application built with React and TypeScript
-- **Backend**: API Rest built with Java and Spring Boot
+- **Backend**: REST API built with Java and Spring Boot
 - **Database**: PostgreSQL
-- **Authentication**: Google as an Authentication Provider
+- **Authentication**: Spring Security and Google as an Authentication Provider
 
-## 4. Data Model
+## Data Model
 
-### 4.1 User Table
+### User Table
 
 | Field         | Type      | Description                |
 | ------------- | --------- | -------------------------- |
@@ -30,7 +38,7 @@ todo: write motivation
 | google_id     | String    | Google unique identifier   |
 | creation_date | Timestamp | Creation date              |
 
-### 4.2 Board Table
+### Board Table
 
 | Field         | Type      | Description             |
 | ------------- | --------- | ----------------------- |
@@ -39,7 +47,7 @@ todo: write motivation
 | creation_date | Timestamp | Creation date           |
 | owner         | User      | User who owns the board |
 
-### 4.3 Group Table
+### Group Table
 
 | Field         | Type      | Description           |
 | ------------- | --------- | --------------------- |
@@ -49,7 +57,7 @@ todo: write motivation
 | position      | Long      | Position in the board |
 | board         | Board     | Associated board      |
 
-### 4.4 Task Table
+### Task Table
 
 | Field         | Type      | Description           |
 | ------------- | --------- | --------------------- |
@@ -61,13 +69,9 @@ todo: write motivation
 | board         | Board     | Associated board      |
 | group         | Group     | Associated group      |
 
-## 5. API Design
+## API Design
 
-### 5.1 User Authentication
-
-Google takes care of this but it's necessary to send the ID Token (JWT) provided by Google on every api request.
-
-### 5.2 Board Endpoints
+### Board Endpoints
 
 | Method | Endpoint          | Description           |
 | ------ | ----------------- | --------------------- |
@@ -76,7 +80,7 @@ Google takes care of this but it's necessary to send the ID Token (JWT) provided
 | PATCH  | /boards/{boardId} | Update a board (name) |
 | DELETE | /boards/{boardId} | Delete a board        |
 
-### 5.3 Column Endpoints
+### Column Endpoints
 
 | Method | Endpoint                           | Description                     |
 | ------ | ---------------------------------- | ------------------------------- |
@@ -85,7 +89,7 @@ Google takes care of this but it's necessary to send the ID Token (JWT) provided
 | PATCH  | /boards/{boardId}/groups/{groupId} | Update a group (name, position) |
 | DELETE | /boards/{boardId}/groups/{groupId} | Delete a group                  |
 
-### 5.4 Task Endpoints
+### Task Endpoints
 
 | Method | Endpoint                                          | Description                                         |
 | ------ | ------------------------------------------------- | --------------------------------------------------- |
