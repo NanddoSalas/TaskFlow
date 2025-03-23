@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { fakeData } from './fakeData';
 import { Board, Group, Task, User } from './types';
 
 export interface State {
@@ -54,14 +53,13 @@ interface Actions {
 }
 
 export const useBearStore = create<State & Actions>()((set) => ({
-  // idToken: null,
-  // user: null,
-  // selectedBoard: null,
-  // boardsId: null,
-  // boards: {},
-  // groups: {},
-  // tasks: {},
-  ...fakeData,
+  idToken: null,
+  user: null,
+  selectedBoard: null,
+  boardIds: null,
+  boards: {},
+  groups: {},
+  tasks: {},
 
   login: (idToken: string, user: User) => set({ idToken, user }),
   logout: () => set({ idToken: null, user: null }),
