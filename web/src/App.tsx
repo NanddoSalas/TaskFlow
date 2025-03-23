@@ -1,11 +1,10 @@
-import { Button } from '@/components/ui/button';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { Auth } from './components/Auth';
 
-function App() {
+export default function App() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
-    </div>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <Auth />
+    </GoogleOAuthProvider>
   );
 }
-
-export default App;
