@@ -3,12 +3,10 @@ import { State } from './bearState';
 export const fakeData: State = {
   idToken: 'fake-id-token-12345',
   user: {
-    id: 1,
     name: 'Fernando Salas',
     email: 'luis.nando.salas28@gmail.com',
     picture:
       'https://lh3.googleusercontent.com/a/ACg8ocKqOmCod6kfT2qGynvcGVOhFtcJ-wEbJBPPkRrtQGBlOOBxxTs=s96-c',
-    creationDate: '2025-03-21T10:00:00Z',
   },
   selectedBoard: null,
   boardIds: [1, 2, 3, 4],
