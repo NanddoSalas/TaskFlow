@@ -19,7 +19,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class CustomPrincipalFilter extends OncePerRequestFilter {
 
-        private final UserService userService;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -27,11 +27,15 @@ public class CustomPrincipalFilter extends OncePerRequestFilter {
 
         Authentication authentication = context.getAuthentication();
 
-        if  (authentication.getPrincipal() instanceof Jwt jwt) {
+        if (authentication.getPrincipal() instanceof Jwt jwt) {
             String sub = jwt.getSubject();
             String name = jwt.getClaimAsString("name");
             String email = jwt.getClaimAsString("email");
             String picture = jwt.getClaimAsString("picture");
+
+            if (picture == null) {
+                picture = "";
+            }
 
             User user = userService.loadOrCrateUser(sub, name, email, picture);
 
