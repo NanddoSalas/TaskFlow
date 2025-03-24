@@ -1,5 +1,6 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Auth } from './components/Auth';
+import './index.css';
 
 export default function App() {
   return (
