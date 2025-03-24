@@ -6,6 +6,7 @@ import {
   SquareKanban,
   StretchVertical,
 } from 'lucide-react';
+import imageUrl from '../assets/development-board.jpg';
 import { useBearStore } from '../bearState';
 import { getUserFromIdToken } from '../utils';
 
@@ -94,12 +95,11 @@ export const WelcomeScreen = () => {
             </div>
           </div>
 
-          {/* todo: update product screenshot */}
           <img
             alt="Product screenshot"
-            src="https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png"
-            width={2432}
-            height={1442}
+            src={imageUrl}
+            width={1920}
+            height={1080}
             className="w-[48rem] max-w-none rounded-xl ring-1 shadow-xl ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
           />
         </div>
