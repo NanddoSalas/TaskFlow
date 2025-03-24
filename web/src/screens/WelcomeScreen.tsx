@@ -43,7 +43,6 @@ export const WelcomeScreen = () => {
 
   const handleLogin = ({ credential }: CredentialResponse) => {
     if (credential) {
-      console.log(credential);
       const user = getUserFromIdToken(credential);
       login(credential, user);
     }
