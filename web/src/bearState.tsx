@@ -29,8 +29,7 @@ interface Actions {
   selectBoard: (index: number | null) => void;
 
   setBoards: (boards: Board[]) => void;
-  setGroups: (boardId: number, groups: Group[]) => void;
-  setTasks: (groupId: number, tasks: Task[]) => void;
+  setGroupsAndTasks: (boardId: number, groups: Group[], tasks: Task[]) => void;
 
   addBoard: (board: Board) => void;
   addGroup: (boardId: number, group: Group) => void;
@@ -65,9 +64,67 @@ export const useBearStore = create<State & Actions>()((set) => ({
   logout: () => set({ idToken: null, user: null }),
   selectBoard: (index: number | null) => set({ selectedBoard: index }),
 
-  setBoards: (boards: Board[]) => {},
-  setGroups: (boardId: number, groups: Group[]) => {},
-  setTasks: (groupId: number, tasks: Task[]) => {},
+  setBoards: (boards: Board[]) => {
+    const boardIds: number[] = [];
+    const boardsObj: {
+      [boardId: number]: {
+        board: Board;
+        groupIds: number[] | null;
+      };
+    } = {};
+
+    boards.forEach((board) => {
+      boardIds.push(board.id);
+      boardsObj[board.id] = {
+        board: board,
+        groupIds: null,
+      };
+    });
+
+    set(() => ({ boardIds, boards: boardsObj }));
+  },
+  setGroupsAndTasks: (boardId: number, groups: Group[], tasks: Task[]) => {
+    const groupIds: number[] = [];
+    const groupsObj: {
+      [groupId: number]: {
+        group: Group;
+        taskIds: number[] | null;
+      };
+    } = {};
+    const tasksObj: {
+      [taskId: number]: Task;
+    } = {};
+
+    groups.forEach((group) => {
+      groupIds.push(group.id);
+      groupsObj[group.id] = {
+        group: group,
+        taskIds: null,
+      };
+    });
+
+    tasks.forEach((task) => {
+      if (groupsObj[task.groupId].taskIds === null) {
+        groupsObj[task.groupId].taskIds = [task.id];
+      } else {
+        groupsObj[task.groupId].taskIds!.push(task.id);
+      }
+
+      tasksObj[task.id] = task;
+    });
+
+    set((state) => {
+      if (state.boards[boardId].groupIds !== null) return state;
+
+      const newState = { ...state };
+
+      newState.boards[boardId].groupIds = groupIds;
+      newState.groups = { ...newState.groups, ...groupsObj };
+      newState.tasks = { ...newState.tasks, ...tasksObj };
+
+      return newState;
+    });
+  },
 
   addBoard: (board: Board) => {},
   addGroup: (boardId: number, group: Group) => {},
