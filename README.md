@@ -84,7 +84,7 @@ Inspired by platforms like Trello, this app allows users to manage tasks effecti
 | PATCH  | /boards/{boardId} | Update a board (name) |
 | DELETE | /boards/{boardId} | Delete a board        |
 
-### Column Endpoints
+### Group Endpoints
 
 | Method | Endpoint                           | Description                     |
 | ------ | ---------------------------------- | ------------------------------- |
