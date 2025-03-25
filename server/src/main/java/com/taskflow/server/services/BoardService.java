@@ -18,7 +18,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     public List<BoardDTO> retrieveBoards(int userId) {
-        List<Board> boards = boardRepository.findAllByOwnerId(userId);
+        List<Board> boards = boardRepository.findAllByOwnerIdOrderByIdAsc(userId);
 
         return boards.stream().map(Board::toDTO).toList();
     }

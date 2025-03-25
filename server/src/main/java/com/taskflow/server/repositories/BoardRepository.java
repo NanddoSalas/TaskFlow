@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface BoardRepository extends CrudRepository<Board, Integer> {
 
-    List<Board> findAllByOwnerId(int ownerId);
+    List<Board> findAllByOwnerIdOrderByIdAsc(int ownerId);
 
     Optional<Board> findByIdAndOwnerId(int boardId, int ownerId);
 
