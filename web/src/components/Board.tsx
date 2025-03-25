@@ -4,6 +4,7 @@ import { useBearStore } from '../bearState';
 import { useRequest } from '../hooks/useRequest';
 import { Group, Task } from '../types';
 import { classNames } from '../utils';
+import { DeleteGroupDialog } from './DeleteGroupDialog';
 import { GroupFormDialog } from './GroupFormDialog';
 import { GroupItem } from './GroupItem';
 import { Skeleton } from './ui/skeleton';
@@ -18,6 +19,9 @@ export const Board: React.FC<BoardProps> = ({ id }) => {
   const request = useRequest();
 
   const [isGroupFormOpen, setIsGroupFormOpen] = useState(false);
+  const [isGroupForm2Open, setIsGroupForm2Open] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [selectedGroupId, setSelectedGroupId] = useState(-1);
 
   useEffect(() => {
     const fun = async () => {
@@ -42,6 +46,20 @@ export const Board: React.FC<BoardProps> = ({ id }) => {
         boardId={id}
       />
 
+      <GroupFormDialog
+        open={isGroupForm2Open}
+        onOpenChange={() => setIsGroupForm2Open(false)}
+        boardId={id}
+        groupId={selectedGroupId}
+      />
+
+      <DeleteGroupDialog
+        open={isConfirmationOpen}
+        onOpenChange={() => setIsConfirmationOpen(false)}
+        boardId={id}
+        groupId={selectedGroupId}
+      />
+
       <div className="flex flex-1 gap-4">
         {groupIds === null ? (
           <>
@@ -51,7 +69,19 @@ export const Board: React.FC<BoardProps> = ({ id }) => {
           </>
         ) : (
           groupIds.map((groupId) => (
-            <GroupItem key={groupId} boardId={id} groupId={groupId} />
+            <GroupItem
+              key={groupId}
+              boardId={id}
+              groupId={groupId}
+              onDelete={() => {
+                setSelectedGroupId(groupId);
+                setIsConfirmationOpen(true);
+              }}
+              onRename={() => {
+                setSelectedGroupId(groupId);
+                setIsGroupForm2Open(true);
+              }}
+            />
           ))
         )}
 
