@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useBearStore } from '../bearState';
+import { useRequest } from '../hooks/useRequest';
+import { Group } from '../types';
 import { Button } from './ui/button';
 import {
   Dialog,
@@ -14,26 +17,47 @@ import { Label } from './ui/label';
 interface GroupFormDialogProps {
   open: boolean;
   onOpenChange: () => void;
+  boardId: number;
   groupId?: number;
 }
 
 export const GroupFormDialog: React.FC<GroupFormDialogProps> = ({
   open,
   onOpenChange,
+  boardId,
   groupId,
 }) => {
   const [name, setName] = useState('');
+  const request = useRequest();
+  const addGroup = useBearStore((state) => state.addGroup);
+  const updateGroup = useBearStore((state) => state.updateGroup);
 
-  const handleCreateGroup = () => {
-    // todo: implement function
-    alert(`create group with name ${name}`);
+  const handleCreateGroup = async () => {
     onOpenChange();
+
+    try {
+      const group = await request<Group>('post', `/boards/${boardId}/groups`, {
+        name,
+      });
+
+      addGroup(boardId!, group);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const handleUpdateGroup = () => {
-    // todo: implement function
-    alert(`udate group with id ${groupId} with new name ${name}`);
+  const handleUpdateGroup = async () => {
     onOpenChange();
+
+    try {
+      await request<Group>('patch', `/boards/${boardId}/groups/${groupId}`, {
+        name,
+      });
+
+      updateGroup(groupId!, name);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

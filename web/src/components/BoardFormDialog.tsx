@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useBearStore } from '../bearState';
+import { useRequest } from '../hooks/useRequest';
+import { Board } from '../types';
 import { Button } from './ui/button';
 import {
   Dialog,
@@ -15,25 +18,44 @@ interface BoardFormDialogProps {
   open: boolean;
   onOpenChange: () => void;
   boardId?: number;
+  selectBoard?: boolean;
 }
 
 export const BoardFormDialog: React.FC<BoardFormDialogProps> = ({
   open,
   onOpenChange,
   boardId,
+  selectBoard,
 }) => {
   const [name, setName] = useState('');
+  const request = useRequest();
+  const addBoard = useBearStore((state) => state.addBoard);
+  const updateBoard = useBearStore((state) => state.updateBoard);
 
-  const handleCreateBoard = () => {
-    // todo: implement function
-    alert(`create board with name ${name}`);
+  const handleCreateBoard = async () => {
     onOpenChange();
+
+    try {
+      const board = await request<Board>('post', '/boards', { name });
+
+      addBoard(board, selectBoard);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const handleUpdateBoard = () => {
-    // todo: implement function
-    alert(`udate board with id ${boardId} with new name ${name}`);
+  const handleUpdateBoard = async () => {
     onOpenChange();
+
+    try {
+      await request<Board>('patch', `/boards/${boardId}`, {
+        name,
+      });
+
+      updateBoard(boardId!, name);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

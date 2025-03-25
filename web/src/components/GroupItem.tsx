@@ -15,11 +15,12 @@ import {
 } from './ui/dropdown-menu';
 
 interface GroupItemProps {
-  id: number;
+  boardId: number;
+  groupId: number;
 }
 
-export const GroupItem: React.FC<GroupItemProps> = ({ id }) => {
-  const { group, taskIds } = useBearStore((state) => state.groups[id]);
+export const GroupItem: React.FC<GroupItemProps> = ({ boardId, groupId }) => {
+  const { group, taskIds } = useBearStore((state) => state.groups[groupId]);
 
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isGroupFormOpen, setIsGroupFormOpen] = useState(false);
@@ -29,13 +30,15 @@ export const GroupItem: React.FC<GroupItemProps> = ({ id }) => {
       <DeleteGroupDialog
         open={isConfirmationOpen}
         onOpenChange={() => setIsConfirmationOpen(false)}
-        boardId={id}
+        boardId={boardId}
+        groupId={groupId}
       />
 
       <GroupFormDialog
         open={isGroupFormOpen}
         onOpenChange={() => setIsGroupFormOpen(false)}
-        groupId={id}
+        boardId={boardId}
+        groupId={groupId}
       />
 
       <div
@@ -82,10 +85,15 @@ export const GroupItem: React.FC<GroupItemProps> = ({ id }) => {
         </div>
 
         {taskIds?.map((taskId) => (
-          <TaskItem key={taskId} id={taskId} />
+          <TaskItem
+            key={taskId}
+            boardId={boardId}
+            groupId={groupId}
+            taskId={taskId}
+          />
         ))}
 
-        <NewTaskButton />
+        <NewTaskButton boardId={boardId} groupId={groupId} />
       </div>
     </>
   );

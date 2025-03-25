@@ -1,3 +1,5 @@
+import { useBearStore } from '../bearState';
+import { useRequest } from '../hooks/useRequest';
 import { ConfirmationDialog } from './ConfirmationDialog';
 
 interface DeleteBoardDialogProps {
@@ -11,9 +13,17 @@ export const DeleteBoardDialog: React.FC<DeleteBoardDialogProps> = ({
   onOpenChange,
   boardId,
 }) => {
-  const handleDelete = () => {
-    // todo: implement function
-    alert(`delete board with id ${boardId}`);
+  const deleteBoard = useBearStore((state) => state.deleteBoard);
+  const request = useRequest();
+
+  const handleDelete = async () => {
+    deleteBoard(boardId);
+
+    try {
+      await request('delete', `/boards/${boardId}`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

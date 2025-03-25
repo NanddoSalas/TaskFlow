@@ -1,19 +1,31 @@
+import { useBearStore } from '../bearState';
+import { useRequest } from '../hooks/useRequest';
 import { ConfirmationDialog } from './ConfirmationDialog';
 
 interface DeleteGroupDialogProps {
   open: boolean;
   onOpenChange: () => void;
   boardId: number;
+  groupId: number;
 }
 
 export const DeleteGroupDialog: React.FC<DeleteGroupDialogProps> = ({
   open,
   onOpenChange,
   boardId,
+  groupId,
 }) => {
-  const handleDelete = () => {
-    // todo: implement function
-    alert(`delete group with id ${boardId}`);
+  const deleteGroup = useBearStore((state) => state.deleteGroup);
+  const request = useRequest();
+
+  const handleDelete = async () => {
+    deleteGroup(boardId, groupId);
+
+    try {
+      await request('delete', `/boards/${boardId}/groups/${groupId}`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

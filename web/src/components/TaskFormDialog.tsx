@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useBearStore } from '../bearState';
+import { useRequest } from '../hooks/useRequest';
+import { Task } from '../types';
 import { Button } from './ui/button';
 import {
   Dialog,
@@ -15,29 +18,54 @@ import { Textarea } from './ui/textarea';
 interface TaskFormDialogProps {
   open: boolean;
   onOpenChange: () => void;
+  boardId: number;
+  groupId: number;
   taskId?: number;
 }
 
 export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
   open,
   onOpenChange,
+  boardId,
+  groupId,
   taskId,
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const request = useRequest();
+  const addTask = useBearStore((state) => state.addTask);
+  const updateTask = useBearStore((state) => state.updateTask);
 
-  const handleCreateTask = () => {
-    // todo: implement function
-    alert(`create task with title${title} description ${description}`);
+  const handleCreateTask = async () => {
     onOpenChange();
+
+    try {
+      const task = await request<Task>(
+        'post',
+        `/boards/${boardId}/groups/${groupId}/tasks`,
+        { title, description },
+      );
+
+      addTask(groupId, task);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const handleUpdateTask = () => {
-    // todo: implement function
-    alert(
-      `update task with id ${taskId} title${title} description ${description}`,
-    );
+  const handleUpdateTask = async () => {
     onOpenChange();
+
+    try {
+      await request<Task>(
+        'patch',
+        `/boards/${boardId}/groups/${groupId}/tasks/${taskId}`,
+        { title, description },
+      );
+
+      updateTask(taskId!, title, description);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

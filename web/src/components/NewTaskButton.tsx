@@ -3,7 +3,15 @@ import { useState } from 'react';
 import { classNames } from '../utils';
 import { TaskFormDialog } from './TaskFormDialog';
 
-export const NewTaskButton = () => {
+interface NewTaskButtonProps {
+  boardId: number;
+  groupId: number;
+}
+
+export const NewTaskButton: React.FC<NewTaskButtonProps> = ({
+  boardId,
+  groupId,
+}) => {
   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
 
   return (
@@ -11,9 +19,10 @@ export const NewTaskButton = () => {
       <TaskFormDialog
         open={isTaskFormOpen}
         onOpenChange={() => setIsTaskFormOpen(false)}
+        boardId={boardId}
+        groupId={groupId}
       />
 
-      {/* todo: disable new task button if fetching */}
       <div
         className={classNames(
           'flex gap-1 p-2 justify-center rounded-xl border opacity-75',

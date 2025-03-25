@@ -1,6 +1,8 @@
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useBearStore } from '../bearState';
+import { useRequest } from '../hooks/useRequest';
+import { Group, Task } from '../types';
 import { classNames } from '../utils';
 import { GroupFormDialog } from './GroupFormDialog';
 import { GroupItem } from './GroupItem';
@@ -12,16 +14,32 @@ interface BoardProps {
 
 export const Board: React.FC<BoardProps> = ({ id }) => {
   const groupIds = useBearStore((state) => state.boards[id].groupIds);
+  const setGroupsAndTasks = useBearStore((state) => state.setGroupsAndTasks);
+  const request = useRequest();
 
   const [isGroupFormOpen, setIsGroupFormOpen] = useState(false);
 
-  // todo: fetch groups and tasks
+  useEffect(() => {
+    const fun = async () => {
+      const groups = await request<Group[]>('get', `/boards/${id}/groups`);
+      const tasks = await request<Task[]>('get', `/boards/${id}/tasks`);
+
+      setGroupsAndTasks(id, groups, tasks);
+    };
+
+    if (groupIds === null) {
+      fun().catch((err) => {
+        console.log(err);
+      });
+    }
+  }, [id]);
 
   return (
     <>
       <GroupFormDialog
         open={isGroupFormOpen}
         onOpenChange={() => setIsGroupFormOpen(false)}
+        boardId={id}
       />
 
       <div className="flex flex-1 gap-4">
@@ -32,7 +50,9 @@ export const Board: React.FC<BoardProps> = ({ id }) => {
             <Skeleton className="w-88 min-w-88 rounded-xl h-72" />
           </>
         ) : (
-          groupIds.map((groupId) => <GroupItem key={groupId} id={groupId} />)
+          groupIds.map((groupId) => (
+            <GroupItem key={groupId} boardId={id} groupId={groupId} />
+          ))
         )}
 
         <div

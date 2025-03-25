@@ -10,8 +10,6 @@ import { Skeleton } from './ui/skeleton';
 export const NavBoards: React.FC = () => {
   const boardIds = useBearStore((state) => state.boardIds);
 
-  // todo: fetch boards
-
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Boards</SidebarGroupLabel>
