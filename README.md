@@ -113,7 +113,7 @@ This project is made up of 2 packages.
 
 ### Prerequisites
 
-- Java >= 23
+- Java >= 21
 - Node.js v22
 - PostgreSQL database
 - Google Client ID
