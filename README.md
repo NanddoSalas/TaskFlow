@@ -18,6 +18,10 @@ This Task Management app was built as a personal project to enhance my skills in
 
 Inspired by platforms like Trello, this app allows users to manage tasks effectively through a Kanban-style board. The project also serves as a practical addition to my self-taught Software Engineer portfolio, demonstrating my ability to design, implement, and deploy scalable applications while integrating authentication and state management.
 
+### Project Screenshot
+
+![project screenshot](./web/src/assets/development-board.jpg)
+
 ## System Architecture
 
 - **Frontend**: Single Page Application built with React and TypeScript
@@ -97,3 +101,81 @@ Inspired by platforms like Trello, this app allows users to manage tasks effecti
 | POST   | /boards/{boardId}/groups/{groupId}/tasks          | Create a new task                                   |
 | PATCH  | /boards/{boardId}/groups/{groupId}/tasks/{taskId} | Update a task (title, description, position, group) |
 | DELETE | /boards/{boardId}/groups/{groupId}/tasks/{taskId} | Delete a task                                       |
+
+## Getting Started
+
+### Packages
+
+This project is made up of 2 packages.
+
+- `server/` (Spring server)
+- `web/` (React app)
+
+### Prerequisites
+
+- Java >= 23
+- Node.js v22
+- PostgreSQL database
+- Google Client ID
+
+### Installation
+
+- Get the code into your local machine
+
+```bash
+git clone https://github.com/NanddoSalas/TaskFlow.git
+cd TaskFlow
+```
+
+#### React app
+
+- Install React app dependencies
+
+```bash
+cd web
+pnpm install
+```
+
+- Setup React app environment at `web/.env`
+
+```bash
+cp .env.example .env
+```
+
+Sample environment
+
+```
+VITE_GOOGLE_CLIENT_ID=your google client id
+VITE_API_URL=http://localhost:8080
+```
+
+- Start React app
+
+```bash
+pnpm run dev
+```
+
+#### Spring Boot app
+
+Setup a database connection at `server/src/main/resources/application.properties`
+
+Sample application properties
+
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/spring
+spring.datasource.username=spring
+spring.datasource.password=password
+spring.datasource.driver-class-name=org.postgresql.Driver
+```
+
+- Start Spring server
+
+```bash
+cd server
+./mvnw spring-boot:run
+```
+
+## License
+
+Distributed under the MIT License.
+See [LICENSE](LICENSE) for more information.
