@@ -31,7 +31,7 @@ interface Actions {
   setBoards: (boards: Board[]) => void;
   setGroupsAndTasks: (boardId: number, groups: Group[], tasks: Task[]) => void;
 
-  addBoard: (board: Board) => void;
+  addBoard: (board: Board, selectBoard?: boolean) => void;
   addGroup: (boardId: number, group: Group) => void;
   addTask: (groupId: number, task: Task) => void;
 
@@ -61,7 +61,18 @@ export const useBearStore = create<State & Actions>()((set) => ({
   tasks: {},
 
   login: (idToken: string, user: User) => set({ idToken, user }),
-  logout: () => set({ idToken: null, user: null }),
+
+  logout: () =>
+    set({
+      idToken: null,
+      user: null,
+      selectedBoard: null,
+      boardIds: null,
+      boards: {},
+      groups: {},
+      tasks: {},
+    }),
+
   selectBoard: (index: number | null) => set({ selectedBoard: index }),
 
   setBoards: (boards: Board[]) => {
@@ -83,6 +94,7 @@ export const useBearStore = create<State & Actions>()((set) => ({
 
     set(() => ({ boardIds, boards: boardsObj }));
   },
+
   setGroupsAndTasks: (boardId: number, groups: Group[], tasks: Task[]) => {
     const groupIds: number[] = [];
     const groupsObj: {
@@ -126,18 +138,136 @@ export const useBearStore = create<State & Actions>()((set) => ({
     });
   },
 
-  addBoard: (board: Board) => {},
-  addGroup: (boardId: number, group: Group) => {},
-  addTask: (groupId: number, task: Task) => {},
+  addBoard: (board: Board, selectBoard) => {
+    set((state) => {
+      const newState = { ...state };
 
-  updateBoard: (boardId: number, name: string) => {},
-  updateGroup: (groupId: number, name: string) => {},
-  updateTask: (taskId: number, title: string, description: string) => {},
+      newState.selectedBoard =
+        selectBoard === true ? board.id : newState.selectedBoard;
+
+      newState.boardIds = [...(newState.boardIds || []), board.id];
+      newState.boards[board.id] = {
+        board: board,
+        groupIds: [],
+      };
+
+      return newState;
+    });
+  },
+
+  addGroup: (boardId: number, group: Group) => {
+    set((state) => {
+      const newState = { ...state };
+
+      newState.boards[boardId].groupIds = [
+        ...(newState.boards[boardId].groupIds || []),
+        group.id,
+      ];
+      newState.groups[group.id] = {
+        group: group,
+        taskIds: [],
+      };
+
+      return newState;
+    });
+  },
+
+  addTask: (groupId: number, task: Task) => {
+    set((state) => {
+      const groups = { ...state.groups };
+      const tasks = { ...state.tasks };
+
+      groups[groupId] = { ...groups[groupId] };
+      groups[groupId].taskIds = [...groups[groupId].taskIds!, task.id];
+
+      tasks[task.id] = { ...task };
+
+      return { groups, tasks };
+    });
+  },
+
+  updateBoard: (boardId: number, name: string) => {
+    set((state) => {
+      const boards = { ...state.boards };
+
+      boards[boardId] = { ...boards[boardId] };
+      boards[boardId].board = { ...boards[boardId].board, name };
+
+      return { boards };
+    });
+  },
+
+  updateGroup: (groupId: number, name: string) => {
+    set((state) => {
+      const groups = { ...state.groups };
+
+      groups[groupId] = { ...groups[groupId] };
+      groups[groupId].group = { ...groups[groupId].group, name };
+
+      return { groups };
+    });
+  },
+
+  updateTask: (taskId: number, title: string, description: string) => {
+    set((state) => {
+      const tasks = { ...state.tasks };
+
+      tasks[taskId] = { ...tasks[taskId], title, description };
+
+      return { tasks };
+    });
+  },
 
   updateGroupPosition: (groupId: number, position: bigint) => {},
   updateTaskPosition: (taskId: number, position: bigint, groupId: number) => {},
 
-  deleteBoard: (boardId: number) => {},
-  deleteGroup: (boardId: number, groupId: number) => {},
-  deleteTask: (groupId: number, taskId: number) => {},
+  deleteBoard: (boardId: number) => {
+    // warning: should also delete all groups and tasks from boardId
+    set((state) => {
+      const boardIds = state.boardIds!.filter((id) => id !== boardId);
+      const boards = { ...state.boards };
+
+      delete boards[boardId];
+
+      return {
+        boardIds,
+        boards,
+        selectedBoard:
+          state.selectedBoard === boardId ? null : state.selectedBoard,
+      };
+    });
+  },
+
+  deleteGroup: (boardId: number, groupId: number) => {
+    // warning: should also delete all tasks from groupId
+    set((state) => {
+      const boards = { ...state.boards };
+      const groups = { ...state.groups };
+
+      boards[boardId] = { ...boards[boardId] };
+      boards[boardId].groupIds = boards[boardId].groupIds!.filter(
+        (id) => id !== groupId,
+      );
+
+      delete groups[groupId];
+
+      return { boards, groups };
+    });
+  },
+
+  deleteTask: (groupId: number, taskId: number) => {
+    set((state) => {
+      const groups = { ...state.groups };
+      const tasks = { ...state.tasks };
+
+      groups[groupId] = { ...groups[groupId] };
+      groups[groupId].taskIds = groups[groupId].taskIds!.filter(
+        (id) => id !== taskId,
+      );
+
+      delete tasks[taskId];
+
+      return { groups, tasks };
+    });
+  },
 }));
