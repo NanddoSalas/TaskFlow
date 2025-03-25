@@ -30,7 +30,7 @@ public class Task {
     @Column(nullable = false)
     private LocalDateTime creationDate;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private long position;
 
     @ManyToOne(fetch = FetchType.LAZY)
