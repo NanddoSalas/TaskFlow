@@ -43,7 +43,10 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
       const task = await request<Task>(
         'post',
         `/boards/${boardId}/groups/${groupId}/tasks`,
-        { title, description },
+        {
+          title: String(title).trim(),
+          description: String(description).trim(),
+        },
       );
 
       addTask(groupId, task);
@@ -97,7 +100,15 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
             id="title"
             className="col-span-3"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, '');
+
+              if (/^\s/.test(value)) {
+                return;
+              }
+
+              setTitle(value);
+            }}
           />
         </div>
 
@@ -110,12 +121,23 @@ export const TaskFormDialog: React.FC<TaskFormDialogProps> = ({
             id="description"
             className="col-span-3"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (/^\s/.test(value)) {
+                return;
+              }
+
+              setDescription(value);
+            }}
           />
         </div>
 
         <DialogFooter>
-          <Button onClick={taskId ? handleUpdateTask : handleCreateTask}>
+          <Button
+            onClick={taskId ? handleUpdateTask : handleCreateTask}
+            disabled={title === ''}
+          >
             {taskId ? 'Save' : 'Create'}
           </Button>
         </DialogFooter>

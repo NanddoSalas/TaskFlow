@@ -37,7 +37,7 @@ export const GroupFormDialog: React.FC<GroupFormDialogProps> = ({
 
     try {
       const group = await request<Group>('post', `/boards/${boardId}/groups`, {
-        name,
+        name: String(name).trim(),
       });
 
       addGroup(boardId!, group);
@@ -51,7 +51,7 @@ export const GroupFormDialog: React.FC<GroupFormDialogProps> = ({
 
     try {
       await request<Group>('patch', `/boards/${boardId}/groups/${groupId}`, {
-        name,
+        name: String(name).trim(),
       });
 
       updateGroup(groupId!, name);
@@ -88,12 +88,23 @@ export const GroupFormDialog: React.FC<GroupFormDialogProps> = ({
             id="name"
             className="col-span-3"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, '');
+
+              if (/^\s/.test(value)) {
+                return;
+              }
+
+              setName(value);
+            }}
           />
         </div>
 
         <DialogFooter>
-          <Button onClick={groupId ? handleUpdateGroup : handleCreateGroup}>
+          <Button
+            onClick={groupId ? handleUpdateGroup : handleCreateGroup}
+            disabled={name === ''}
+          >
             {groupId ? 'Save' : 'Create'}
           </Button>
         </DialogFooter>

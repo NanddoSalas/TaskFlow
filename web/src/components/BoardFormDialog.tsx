@@ -36,7 +36,9 @@ export const BoardFormDialog: React.FC<BoardFormDialogProps> = ({
     onOpenChange();
 
     try {
-      const board = await request<Board>('post', '/boards', { name });
+      const board = await request<Board>('post', '/boards', {
+        name: String(name).trim(),
+      });
 
       addBoard(board, selectBoard);
     } catch (err) {
@@ -49,7 +51,7 @@ export const BoardFormDialog: React.FC<BoardFormDialogProps> = ({
 
     try {
       await request<Board>('patch', `/boards/${boardId}`, {
-        name,
+        name: String(name).trim(),
       });
 
       updateBoard(boardId!, name);
@@ -86,12 +88,23 @@ export const BoardFormDialog: React.FC<BoardFormDialogProps> = ({
             id="name"
             className="col-span-3"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, '');
+
+              if (/^\s/.test(value)) {
+                return;
+              }
+
+              setName(value);
+            }}
           />
         </div>
 
         <DialogFooter>
-          <Button onClick={boardId ? handleUpdateBoard : handleCreateBoard}>
+          <Button
+            onClick={boardId ? handleUpdateBoard : handleCreateBoard}
+            disabled={name === ''}
+          >
             {boardId ? 'Save' : 'Create'}
           </Button>
         </DialogFooter>
