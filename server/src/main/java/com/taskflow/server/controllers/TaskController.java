@@ -23,13 +23,13 @@ public class TaskController {
         return ResponseDTO.ok(taskService.retrieveTasks(user.getId(), boardId));
     }
 
-    @PostMapping("/groups/{groupId}/task")
+    @PostMapping("/groups/{groupId}/tasks")
     public ResponseEntity<ResponseDTO> createTask(@AuthenticationPrincipal User user, @PathVariable int boardId,
                                                   @Valid @RequestBody CreateTaskForm form, @PathVariable int groupId) throws Exception {
         return ResponseDTO.ok(taskService.createTask(user.getId(), boardId, groupId, form));
     }
 
-    @PutMapping("/groups/{groupId}/tasks/{taskId}")
+    @PatchMapping("/groups/{groupId}/tasks/{taskId}")
     public ResponseEntity<ResponseDTO> updateTask(@AuthenticationPrincipal User user, @PathVariable int taskId,
                                                   @Valid @RequestBody PatchTaskForm form, @PathVariable int boardId, @PathVariable int groupId) throws Exception {
         return ResponseDTO.ok(taskService.updateTask(user.getId(), boardId, groupId, taskId, form));
