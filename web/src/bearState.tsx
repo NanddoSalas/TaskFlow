@@ -1,5 +1,9 @@
 import { create } from 'zustand';
+
 import { Board, Group, Task, User } from './types';
+
+type DialogAction = 'create' | 'update' | 'delete' | null;
+type DialogTarget = 'board' | 'group' | 'task' | null;
 
 export interface State {
   idToken: string | null;
@@ -20,6 +24,14 @@ export interface State {
   };
   tasks: {
     [taskId: number]: Task;
+  };
+  dialog: {
+    isOpen: boolean;
+    action: DialogAction;
+    target: DialogTarget;
+    boardId: number | null;
+    groupId: number | null;
+    taskId: number | null;
   };
 }
 
@@ -49,6 +61,17 @@ interface Actions {
   deleteBoard: (boardId: number) => void;
   deleteGroup: (boardId: number, groupId: number) => void;
   deleteTask: (groupId: number, taskId: number) => void;
+
+  openDialog: (
+    action: DialogAction,
+    target: DialogTarget,
+    context: {
+      boardId: number | null;
+      groupId: number | null;
+      taskId: number | null;
+    },
+  ) => void;
+  closeDialog: () => void;
 }
 
 export const useBearStore = create<State & Actions>()((set) => ({
@@ -59,6 +82,14 @@ export const useBearStore = create<State & Actions>()((set) => ({
   boards: {},
   groups: {},
   tasks: {},
+  dialog: {
+    isOpen: false,
+    action: null,
+    target: null,
+    boardId: null,
+    groupId: null,
+    taskId: null,
+  },
 
   login: (idToken: string, user: User) => set({ idToken, user }),
 
@@ -269,5 +300,39 @@ export const useBearStore = create<State & Actions>()((set) => ({
 
       return { groups, tasks };
     });
+  },
+
+  openDialog: (
+    action: DialogAction,
+    target: DialogTarget,
+    context: {
+      boardId: number | null;
+      groupId: number | null;
+      taskId: number | null;
+    },
+  ) => {
+    set(() => ({
+      dialog: {
+        isOpen: true,
+        action,
+        target,
+        boardId: context.boardId,
+        groupId: context.groupId,
+        taskId: context.taskId,
+      },
+    }));
+  },
+
+  closeDialog: () => {
+    set(() => ({
+      dialog: {
+        isOpen: false,
+        action: null,
+        target: null,
+        boardId: null,
+        groupId: null,
+        taskId: null,
+      },
+    }));
   },
 }));

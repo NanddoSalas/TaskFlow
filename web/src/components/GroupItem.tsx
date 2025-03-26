@@ -14,17 +14,11 @@ import {
 interface GroupItemProps {
   boardId: number;
   groupId: number;
-  onDelete: (groupId: number) => void;
-  onRename: (groupId: number) => void;
 }
 
-export const GroupItem: React.FC<GroupItemProps> = ({
-  boardId,
-  groupId,
-  onDelete,
-  onRename,
-}) => {
+export const GroupItem: React.FC<GroupItemProps> = ({ boardId, groupId }) => {
   const { group, taskIds } = useBearStore((state) => state.groups[groupId]);
+  const openDialog = useBearStore((state) => state.openDialog);
 
   return (
     <div
@@ -57,12 +51,28 @@ export const GroupItem: React.FC<GroupItemProps> = ({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="w-32">
-            <DropdownMenuItem onClick={() => onRename(groupId)}>
+            <DropdownMenuItem
+              onClick={() =>
+                openDialog('update', 'group', {
+                  boardId,
+                  groupId,
+                  taskId: null,
+                })
+              }
+            >
               <Pen />
               <span>Rename</span>
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => onDelete(groupId)}>
+            <DropdownMenuItem
+              onClick={() =>
+                openDialog('delete', 'group', {
+                  boardId,
+                  groupId,
+                  taskId: null,
+                })
+              }
+            >
               <Trash2 />
               <span>Delete</span>
             </DropdownMenuItem>

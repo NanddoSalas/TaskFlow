@@ -20,7 +20,7 @@ export const AppSidebarInset: React.FC<AppSidebarInsetProps> = ({
   const selectedBoard = useBearStore((state) => state.selectedBoard);
   const placeholder = useBearStore((state) =>
     selectedBoard
-      ? state.boards[selectedBoard].board.name
+      ? state.boards[selectedBoard]?.board.name
       : 'No board selected',
   );
 
