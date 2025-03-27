@@ -6,7 +6,6 @@ import {
 import { Grip, MoreHorizontal, Pen, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useBearStore } from '../hooks/useBearStore';
-import { Task } from '../types';
 import { classNames } from '../utils';
 import { NewTaskButton } from './NewTaskButton';
 import { TaskItem } from './TaskItem';
@@ -44,7 +43,7 @@ export const GroupItem: React.FC<GroupItemProps> = ({
     return combine(
       draggable({
         element,
-        getInitialData: () => ({ boardId, index, group }),
+        getInitialData: () => ({ boardId, groupId, index }),
         onDragStart: () => {
           setIsDragging(true);
         },
@@ -55,12 +54,10 @@ export const GroupItem: React.FC<GroupItemProps> = ({
 
       dropTargetForElements({
         element,
-        getData: () => ({ boardId, index, group }),
+        getData: () => ({ boardId, groupId, index }),
         canDrop: ({ source }) => {
-          if ('task' in source.data) {
-            const t = source.data.task as Task;
-
-            if (t.groupId === group.id) return false;
+          if ('taskId' in source.data) {
+            if (source.data.groupId === groupId) return false;
           }
 
           return source.element !== element;
@@ -74,13 +71,13 @@ export const GroupItem: React.FC<GroupItemProps> = ({
         onDrop: ({ source, self, location }) => {
           setIsDropTarget(false);
 
-          if ('task' in location.current.dropTargets[0].data) return;
+          if ('taskId' in location.current.dropTargets[0].data) return;
 
           console.log(source.data, self.data);
         },
       }),
     );
-  }, [boardId, index, group]);
+  }, [boardId, groupId, index]);
 
   return (
     <div

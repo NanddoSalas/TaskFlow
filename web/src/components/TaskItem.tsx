@@ -61,7 +61,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     return combine(
       draggable({
         element,
-        getInitialData: () => ({ groupId, index, task }),
+        getInitialData: () => ({ groupId, taskId, index }),
         onDragStart: () => {
           setIsDragging(true);
         },
@@ -72,9 +72,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
       dropTargetForElements({
         element,
-        getData: () => ({ groupId, index, task }),
+        getData: () => ({ groupId, taskId, index }),
         canDrop: ({ source }) => {
-          if ('group' in source.data) {
+          if ('boardId' in source.data) {
             return false;
           }
 
@@ -93,7 +93,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         },
       }),
     );
-  }, [groupId, index, task]);
+  }, [groupId, taskId, index]);
 
   return (
     <Card
