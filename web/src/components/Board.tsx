@@ -41,8 +41,13 @@ export const Board: React.FC<BoardProps> = ({ id }) => {
           <Skeleton className="w-88 min-w-88 rounded-xl h-72" />
         </>
       ) : (
-        groupIds.map((groupId) => (
-          <GroupItem key={groupId} boardId={id} groupId={groupId} />
+        groupIds.map((groupId, index) => (
+          <GroupItem
+            key={groupId}
+            boardId={id}
+            groupId={groupId}
+            index={index}
+          />
         ))
       )}
 

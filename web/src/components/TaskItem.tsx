@@ -1,7 +1,14 @@
+import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
+import {
+  draggable,
+  dropTargetForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { MoreHorizontal, Pen, Trash2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useBearStore } from '../bearState';
 import { useRequest } from '../hooks/useRequest';
 import { Task } from '../types';
+import { classNames } from '../utils';
 import { Button } from './ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
 import {
@@ -15,17 +22,23 @@ interface TaskItemProps {
   boardId: number;
   groupId: number;
   taskId: number;
+  index: number;
 }
 
 export const TaskItem: React.FC<TaskItemProps> = ({
   boardId,
   groupId,
   taskId,
+  index,
 }) => {
   const task = useBearStore((state) => state.tasks[taskId]);
   const request = useRequest();
   const deleteTask = useBearStore((state) => state.deleteTask);
   const openDialog = useBearStore((state) => state.openDialog);
+
+  const ref = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isDropTarget, setIsDropTarget] = useState(false);
 
   const handleDelete = async () => {
     try {
@@ -40,11 +53,58 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     }
   };
 
+  useEffect(() => {
+    const element = ref.current;
+
+    if (!element) return;
+
+    return combine(
+      draggable({
+        element,
+        getInitialData: () => ({ groupId, index, task }),
+        onDragStart: () => {
+          setIsDragging(true);
+        },
+        onDrop: () => {
+          setIsDragging(false);
+        },
+      }),
+
+      dropTargetForElements({
+        element,
+        getData: () => ({ groupId, index, task }),
+        canDrop: ({ source }) => {
+          if ('group' in source.data) {
+            return false;
+          }
+
+          return source.element !== element;
+        },
+        onDragEnter: () => {
+          setIsDropTarget(true);
+        },
+        onDragLeave: () => {
+          setIsDropTarget(false);
+        },
+        onDrop: ({ source, self }) => {
+          setIsDropTarget(false);
+
+          console.log(source.data, self.data);
+        },
+      }),
+    );
+  }, [groupId, index, task]);
+
   return (
     <Card
       key={task.id}
-      className="py-4 hover:bg-neutral-100  hover:cursor-grab group"
+      className={classNames(
+        'py-4 hover:bg-neutral-100  hover:cursor-grab group',
+        isDragging ? 'opacity-50' : '',
+        isDropTarget ? 'opacity-25' : '',
+      )}
       onClick={() => openDialog('update', 'task', { boardId, groupId, taskId })}
+      ref={ref}
     >
       <CardHeader className="px-4 relative">
         <CardTitle>{task.title}</CardTitle>
