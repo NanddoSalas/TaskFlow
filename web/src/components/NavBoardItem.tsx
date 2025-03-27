@@ -1,5 +1,5 @@
 import { MoreHorizontal, Pen, Trash2 } from 'lucide-react';
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 import { classNames } from '../utils';
 import {
   DropdownMenu,

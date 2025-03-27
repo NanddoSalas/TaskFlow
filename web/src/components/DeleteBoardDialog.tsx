@@ -1,4 +1,4 @@
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 import { useRequest } from '../hooks/useRequest';
 import { ConfirmationDialog } from './ConfirmationDialog';
 

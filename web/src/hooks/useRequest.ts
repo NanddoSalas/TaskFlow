@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useBearStore } from '../bearState';
+import { useBearStore } from './useBearStore';
 
 type Method = 'get' | 'post' | 'patch' | 'delete';
 interface APIResponse<D, E> {

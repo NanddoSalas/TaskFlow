@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { Board, Group, Task, User } from './types';
+import { Board, Group, Task, User } from '../types';
 
 type DialogAction = 'create' | 'update' | 'delete' | null;
 type DialogTarget = 'board' | 'group' | 'task' | null;
@@ -75,7 +75,7 @@ interface Actions {
 }
 
 export const useBearStore = create<State & Actions>()((set) => ({
-  idToken: null,
+  idToken: '',
   user: null,
   selectedBoard: null,
   boardIds: null,

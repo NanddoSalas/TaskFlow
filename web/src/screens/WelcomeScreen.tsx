@@ -7,7 +7,7 @@ import {
   StretchVertical,
 } from 'lucide-react';
 import imageUrl from '../assets/development-board.jpg';
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 import { getUserFromIdToken } from '../utils';
 
 const features = [

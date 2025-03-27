@@ -3,7 +3,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from '@/components/ui/sidebar';
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 import { NavBoardItem } from './NavBoardItem';
 import { Skeleton } from './ui/skeleton';
 

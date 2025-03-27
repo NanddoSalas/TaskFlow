@@ -1,7 +1,7 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import { useBearStore } from './bearState';
 import { Auth } from './components/Auth';
+import { useBearStore } from './hooks/useBearStore';
 import './index.css';
 
 if (process.env.NODE_ENV === 'development') {

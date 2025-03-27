@@ -5,7 +5,7 @@ import {
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { MoreHorizontal, Pen, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 import { useRequest } from '../hooks/useRequest';
 import { Task } from '../types';
 import { classNames } from '../utils';

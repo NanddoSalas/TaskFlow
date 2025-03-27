@@ -1,6 +1,6 @@
 import { Separator } from '@radix-ui/react-separator';
 import { ReactNode } from 'react';
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 import {
   Breadcrumb,
   BreadcrumbItem,

@@ -1,4 +1,4 @@
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 import { DashboardScreen } from '../screens/DashboardScreen';
 import { WelcomeScreen } from '../screens/WelcomeScreen';
 

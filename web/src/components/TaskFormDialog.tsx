@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 import { useRequest } from '../hooks/useRequest';
 import { Task } from '../types';
 import { Button } from './ui/button';

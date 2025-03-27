@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { useBearStore } from '../bearState';
 import { AppSidebar } from '../components/AppSidebar';
 import { AppSidebarInset } from '../components/AppSidebarInset';
 import { Board } from '../components/Board';
@@ -11,6 +10,7 @@ import { GroupFormDialog } from '../components/GroupFormDialog';
 import { Home } from '../components/Home';
 import { TaskFormDialog } from '../components/TaskFormDialog';
 import { SidebarProvider } from '../components/ui/sidebar';
+import { useBearStore } from '../hooks/useBearStore';
 import { useRequest } from '../hooks/useRequest';
 import { Board as BoardType } from '../types';
 

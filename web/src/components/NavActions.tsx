@@ -6,7 +6,7 @@ import {
   SidebarMenu,
 } from '@/components/ui/sidebar';
 import { PlusIcon } from 'lucide-react';
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 import { NavActionItem } from './NavActionItem';
 
 export const NavActions: React.FC = () => {

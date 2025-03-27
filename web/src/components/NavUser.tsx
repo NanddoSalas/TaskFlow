@@ -15,7 +15,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { useBearStore } from '../bearState';
+import { useBearStore } from '../hooks/useBearStore';
 
 export const NavUser: React.FC = () => {
   const { isMobile } = useSidebar();
