@@ -98,7 +98,13 @@ export const GroupItem: React.FC<GroupItemProps> = ({
               self.data as unknown as GroupPayload,
             );
 
-            // todo: hit api to save new position
+            request(
+              'patch',
+              `/boards/${source.data.boardId}/groups/${source.data.groupId}`,
+              {
+                position: newPosition,
+              },
+            ).catch((err) => console.log(err));
           }
         },
       }),

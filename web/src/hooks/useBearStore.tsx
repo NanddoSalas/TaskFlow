@@ -72,7 +72,7 @@ interface Actions {
 }
 
 export const useBearStore = create<State & Actions>()((set, get) => ({
-  idToken: '',
+  idToken: null,
   user: null,
   selectedBoard: null,
   boardIds: null,
@@ -247,8 +247,73 @@ export const useBearStore = create<State & Actions>()((set, get) => ({
   },
 
   moveGroupToGroup: (target: GroupPayload, destination: GroupPayload) => {
-    // todo: implement function
-    return 0;
+    let newPosition: number;
+    let newGroupIds: number[];
+
+    const boardId = target.boardId;
+    const groupIds = get().boards[boardId].groupIds || [];
+
+    if (destination.index === 0) {
+      const firstGroup = get().groups[destination.groupId].group;
+
+      newPosition = firstGroup.position - 10000;
+
+      newGroupIds = groupIds.filter((id) => id !== target.groupId);
+      newGroupIds.unshift(target.groupId);
+    } else if (destination.index === groupIds.length - 1) {
+      const lastGroup = get().groups[groupIds[groupIds.length - 1]].group;
+
+      newPosition = lastGroup.position + 10000;
+
+      newGroupIds = groupIds.filter((id) => id !== target.groupId);
+      newGroupIds.push(target.groupId);
+    } else {
+      const leftGroupId =
+        groupIds[
+          target.index > destination.index
+            ? destination.index - 1
+            : destination.index
+        ];
+
+      const rightGroupId =
+        groupIds[
+          target.index > destination.index
+            ? destination.index
+            : destination.index + 1
+        ];
+
+      const leftGroup = get().groups[leftGroupId].group;
+      const rightGroup = get().groups[rightGroupId].group;
+
+      console.log(leftGroup.name, rightGroup.name);
+
+      newPosition = (leftGroup.position + rightGroup.position) / 2;
+      newGroupIds = groupIds.filter((id) => id !== target.groupId);
+
+      newGroupIds = [
+        ...newGroupIds.slice(0, destination.index),
+        target.groupId,
+        ...newGroupIds.slice(destination.index),
+      ];
+    }
+
+    set((state) => {
+      const groups = { ...state.groups };
+      const boards = { ...state.boards };
+
+      groups[target.groupId] = { ...groups[target.groupId] };
+      groups[target.groupId].group = {
+        ...groups[target.groupId].group,
+        position: newPosition,
+      };
+
+      boards[boardId] = { ...state.boards[boardId] };
+      boards[boardId].groupIds = newGroupIds;
+
+      return { groups, boards };
+    });
+
+    return newPosition;
   },
 
   moveTaskToGroup: (target: TaskPayload, destination: GroupPayload) => {
