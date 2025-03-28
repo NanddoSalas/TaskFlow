@@ -6,6 +6,8 @@ import {
 import { Grip, MoreHorizontal, Pen, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useBearStore } from '../hooks/useBearStore';
+import { useRequest } from '../hooks/useRequest';
+import { GroupPayload, TaskPayload } from '../types';
 import { classNames } from '../utils';
 import { NewTaskButton } from './NewTaskButton';
 import { TaskItem } from './TaskItem';
@@ -30,6 +32,9 @@ export const GroupItem: React.FC<GroupItemProps> = ({
 }) => {
   const { group, taskIds } = useBearStore((state) => state.groups[groupId]);
   const openDialog = useBearStore((state) => state.openDialog);
+  const moveGroupToGroup = useBearStore((state) => state.moveGroupToGroup);
+  const moveTaskToGroup = useBearStore((state) => state.moveTaskToGroup);
+  const request = useRequest();
 
   const ref = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -73,11 +78,32 @@ export const GroupItem: React.FC<GroupItemProps> = ({
 
           if ('taskId' in location.current.dropTargets[0].data) return;
 
-          console.log(source.data, self.data);
+          if ('taskId' in source.data) {
+            const newPosition = moveTaskToGroup(
+              source.data as unknown as TaskPayload,
+              self.data as unknown as GroupPayload,
+            );
+
+            request(
+              'patch',
+              `/boards/${self.data.boardId}/groups/${source.data.groupId}/tasks/${source.data.taskId}`,
+              {
+                position: newPosition,
+                groupId: self.data.groupId,
+              },
+            ).catch((err) => console.log(err));
+          } else {
+            const newPosition = moveGroupToGroup(
+              source.data as unknown as GroupPayload,
+              self.data as unknown as GroupPayload,
+            );
+
+            // todo: hit api to save new position
+          }
         },
       }),
     );
-  }, [boardId, groupId, index]);
+  }, [boardId, groupId, index, moveTaskToGroup, moveGroupToGroup, request]);
 
   return (
     <div

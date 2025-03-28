@@ -7,7 +7,7 @@ import { MoreHorizontal, Pen, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useBearStore } from '../hooks/useBearStore';
 import { useRequest } from '../hooks/useRequest';
-import { Task } from '../types';
+import { Task, TaskPayload } from '../types';
 import { classNames } from '../utils';
 import { Button } from './ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -35,6 +35,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   const request = useRequest();
   const deleteTask = useBearStore((state) => state.deleteTask);
   const openDialog = useBearStore((state) => state.openDialog);
+  const moveTaskToTask = useBearStore((state) => state.moveTaskToTask);
 
   const ref = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -89,11 +90,16 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         onDrop: ({ source, self }) => {
           setIsDropTarget(false);
 
-          console.log(source.data, self.data);
+          const newPosition = moveTaskToTask(
+            source.data as unknown as TaskPayload,
+            self.data as unknown as TaskPayload,
+          );
+
+          // todo: hit api to save new position
         },
       }),
     );
-  }, [groupId, taskId, index]);
+  }, [groupId, taskId, index, moveTaskToTask]);
 
   return (
     <Card

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { Board, Group, Task, User } from '../types';
+import { Board, Group, GroupPayload, Task, TaskPayload, User } from '../types';
 
 type DialogAction = 'create' | 'update' | 'delete' | null;
 type DialogTarget = 'board' | 'group' | 'task' | null;
@@ -51,12 +51,9 @@ interface Actions {
   updateGroup: (groupId: number, name: string) => void;
   updateTask: (taskId: number, title: string, description: string) => void;
 
-  updateGroupPosition: (groupId: number, position: bigint) => void;
-  updateTaskPosition: (
-    taskId: number,
-    position: bigint,
-    groupId: number,
-  ) => void;
+  moveGroupToGroup: (target: GroupPayload, destination: GroupPayload) => number;
+  moveTaskToGroup: (target: TaskPayload, destination: GroupPayload) => number;
+  moveTaskToTask: (target: TaskPayload, destination: TaskPayload) => number;
 
   deleteBoard: (boardId: number) => void;
   deleteGroup: (boardId: number, groupId: number) => void;
@@ -74,7 +71,7 @@ interface Actions {
   closeDialog: () => void;
 }
 
-export const useBearStore = create<State & Actions>()((set) => ({
+export const useBearStore = create<State & Actions>()((set, get) => ({
   idToken: '',
   user: null,
   selectedBoard: null,
@@ -209,7 +206,7 @@ export const useBearStore = create<State & Actions>()((set) => ({
       const tasks = { ...state.tasks };
 
       groups[groupId] = { ...groups[groupId] };
-      groups[groupId].taskIds = [...groups[groupId].taskIds!, task.id];
+      groups[groupId].taskIds = [...(groups[groupId].taskIds || []), task.id];
 
       tasks[task.id] = { ...task };
 
@@ -249,8 +246,57 @@ export const useBearStore = create<State & Actions>()((set) => ({
     });
   },
 
-  updateGroupPosition: (groupId: number, position: bigint) => {},
-  updateTaskPosition: (taskId: number, position: bigint, groupId: number) => {},
+  moveGroupToGroup: (target: GroupPayload, destination: GroupPayload) => {
+    // todo: implement function
+    return 0;
+  },
+
+  moveTaskToGroup: (target: TaskPayload, destination: GroupPayload) => {
+    let newPosition: number;
+
+    const taskIds = get().groups[destination.groupId].taskIds || [];
+
+    if (taskIds.length === 0) {
+      // group is empty
+      newPosition = 0;
+    } else {
+      const lastIndex = taskIds[taskIds.length - 1];
+      const lastTask = get().tasks[lastIndex];
+
+      newPosition = lastTask.position + 10000;
+    }
+
+    set((state) => {
+      const groups = { ...state.groups };
+      const tasks = { ...state.tasks };
+
+      // add task (taskId) to new group
+      groups[destination.groupId] = { ...groups[destination.groupId] };
+      groups[destination.groupId].taskIds = [...taskIds, target.taskId];
+
+      // remove task (taskId) from old group
+      groups[target.groupId] = { ...groups[target.groupId] };
+      groups[target.groupId].taskIds = [
+        ...groups[target.groupId].taskIds!.filter((id) => id !== target.taskId),
+      ];
+
+      // update position in position in task
+      tasks[target.taskId] = {
+        ...tasks[target.taskId],
+        position: newPosition,
+        groupId: destination.groupId,
+      };
+
+      return { groups, tasks };
+    });
+
+    return newPosition;
+  },
+
+  moveTaskToTask: (target: TaskPayload, destination: TaskPayload) => {
+    // todo: implement function
+    return 0;
+  },
 
   deleteBoard: (boardId: number) => {
     // warning: should also delete all groups and tasks from boardId

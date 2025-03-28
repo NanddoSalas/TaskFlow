@@ -25,3 +25,15 @@ export interface Task {
   position: number;
   groupId: number;
 }
+
+export interface GroupPayload {
+  boardId: number;
+  groupId: number;
+  index: number;
+}
+
+export interface TaskPayload {
+  groupId: number;
+  taskId: number;
+  index: number;
+}
