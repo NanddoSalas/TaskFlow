@@ -42,7 +42,7 @@ public class TaskService {
         Optional<Task> taskOptional = taskRepository.findFirstByOrderByPositionDesc();
 
         if (taskOptional.isPresent()) {
-            long newPosition = taskOptional.get().getPosition() + 10000;
+            int newPosition = taskOptional.get().getPosition() + 10000;
             task.setPosition(newPosition);
         } else {
             task.setPosition(0);

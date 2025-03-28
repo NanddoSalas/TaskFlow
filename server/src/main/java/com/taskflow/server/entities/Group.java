@@ -28,7 +28,7 @@ public class Group {
     private LocalDateTime creationDate;
 
     @Column(nullable = false)
-    private long position;
+    private int position;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", nullable = false, insertable = false, updatable = false)

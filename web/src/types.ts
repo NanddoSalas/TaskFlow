@@ -14,7 +14,7 @@ export interface Group {
   id: number;
   name: string;
   creationDate: string;
-  position: bigint;
+  position: number;
 }
 
 export interface Task {
@@ -22,6 +22,6 @@ export interface Task {
   title: string;
   description: string;
   creationDate: string;
-  position: bigint;
+  position: number;
   groupId: number;
 }

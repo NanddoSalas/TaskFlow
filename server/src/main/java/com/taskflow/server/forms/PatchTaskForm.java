@@ -11,7 +11,7 @@ public class PatchTaskForm {
 
     private String description;
 
-    private Long position;
+    private Integer position;
 
     private Integer groupId;
 

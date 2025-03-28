@@ -11,7 +11,7 @@ public class TaskDTO {
     private String title;
     private String description;
     private LocalDateTime creationDate;
-    private Long position;
+    private int position;
     private int groupId;
 
 }

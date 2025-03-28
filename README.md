@@ -58,7 +58,7 @@ Inspired by platforms like Trello, this app allows users to manage tasks effecti
 | id            | Integer   | Unique identifier     |
 | name          | String    | Group name            |
 | creation_date | Timestamp | Creation date         |
-| position      | Long      | Position in the board |
+| position      | Integer   | Position in the board |
 | board         | Board     | Associated board      |
 
 ### Task Table
@@ -69,7 +69,7 @@ Inspired by platforms like Trello, this app allows users to manage tasks effecti
 | title         | String    | Task title            |
 | description   | Text      | Task details          |
 | creation_date | Timestamp | Creation date         |
-| position      | Long      | Position in the group |
+| position      | Integer   | Position in the group |
 | board         | Board     | Associated board      |
 | group         | Group     | Associated group      |
 

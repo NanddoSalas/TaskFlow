@@ -37,7 +37,7 @@ public class GroupService {
         Optional<Group> groupOptional = groupRepository.findFirstByOrderByPositionDesc();
 
         if (groupOptional.isPresent()) {
-            long newPosition = groupOptional.get().getPosition() + 10000;
+            int newPosition = groupOptional.get().getPosition() + 10000;
             group.setPosition(newPosition);
         } else {
             group.setPosition(0);

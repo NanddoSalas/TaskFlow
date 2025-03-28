@@ -10,6 +10,6 @@ public class GroupDTO {
     private int id;
     private String name;
     private LocalDateTime creationDate;
-    private Long position;
+    private int position;
 
 }

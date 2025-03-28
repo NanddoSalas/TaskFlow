@@ -9,6 +9,6 @@ public class PatchGroupForm {
     @Size(min = 1, max = 255)
     private String name;
 
-    private Long position;
+    private Integer position;
 
 }
