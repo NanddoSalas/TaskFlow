@@ -62,7 +62,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     return combine(
       draggable({
         element,
-        getInitialData: () => ({ groupId, taskId, index }),
+        getInitialData: () => ({ groupId, taskId, index, boardId }),
         onDragStart: () => {
           setIsDragging(true);
         },
@@ -73,9 +73,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
       dropTargetForElements({
         element,
-        getData: () => ({ groupId, taskId, index }),
+        getData: () => ({ groupId, taskId, index, boardId }),
         canDrop: ({ source }) => {
-          if ('boardId' in source.data) {
+          if ('taskId' in source.data === false) {
             return false;
           }
 
@@ -95,11 +95,18 @@ export const TaskItem: React.FC<TaskItemProps> = ({
             self.data as unknown as TaskPayload,
           );
 
-          // todo: hit api to save new position
+          request(
+            'patch',
+            `/boards/${source.data.boardId}/groups/${source.data.groupId}/tasks/${source.data.taskId}`,
+            {
+              position: newPosition,
+              groupId: self.data.groupId,
+            },
+          ).catch((err) => console.log(err));
         },
       }),
     );
-  }, [groupId, taskId, index, moveTaskToTask]);
+  }, [groupId, taskId, index, moveTaskToTask, request, boardId]);
 
   return (
     <Card

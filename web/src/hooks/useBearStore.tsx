@@ -419,8 +419,51 @@ export const useBearStore = create<State & Actions>()((set, get) => ({
       return newPosition;
     } else {
       // moving card to another card
-      newPosition = 0;
-      newPosition = 0;
+      const taskIds = [...(get().groups[destination.groupId].taskIds || [])];
+
+      if (destination.index === 0) {
+        // move task at the top
+
+        newPosition = get().tasks[destination.taskId].position - 10000;
+        newTaskIds = [target.taskId, ...taskIds];
+      } else {
+        // move task somewhere else
+
+        const leftTaskId = taskIds[destination.index - 1];
+        const rightTaskId = taskIds[destination.index];
+
+        const leftTask = get().tasks[leftTaskId];
+        const rightTask = get().tasks[rightTaskId];
+
+        newPosition = (leftTask.position + rightTask.position) / 2;
+
+        newTaskIds = [
+          ...taskIds.slice(0, destination.index),
+          target.taskId,
+          ...taskIds.slice(destination.index),
+        ];
+      }
+
+      set((state) => {
+        const tasks = { ...state.tasks };
+        const groups = { ...state.groups };
+
+        tasks[target.taskId] = {
+          ...tasks[target.taskId],
+          position: newPosition,
+          groupId: destination.groupId,
+        };
+
+        groups[target.groupId] = { ...state.groups[target.groupId] };
+        groups[target.groupId].taskIds = groups[target.groupId].taskIds!.filter(
+          (id) => id !== target.taskId,
+        );
+
+        groups[destination.groupId] = { ...state.groups[destination.groupId] };
+        groups[destination.groupId].taskIds = newTaskIds;
+
+        return { tasks, groups };
+      });
 
       return newPosition;
     }
