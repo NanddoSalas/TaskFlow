@@ -353,8 +353,77 @@ export const useBearStore = create<State & Actions>()((set, get) => ({
   },
 
   moveTaskToTask: (target: TaskPayload, destination: TaskPayload) => {
-    // todo: implement function
-    return 0;
+    let newPosition: number;
+    let newTaskIds: number[];
+
+    if (target.groupId === destination.groupId) {
+      // move task inside the same card
+      const taskIds = [...(get().groups[target.groupId].taskIds || [])];
+
+      if (destination.index === 0) {
+        // move task at the top
+
+        newPosition = get().tasks[destination.taskId].position - 10000;
+        newTaskIds = taskIds.filter((id) => id !== target.taskId);
+        newTaskIds.unshift(target.taskId);
+      } else if (destination.index === taskIds.length - 1) {
+        // move task at the bottom
+
+        newPosition = get().tasks[destination.taskId].position + 10000;
+        newTaskIds = taskIds.filter((id) => id !== target.taskId);
+        newTaskIds.push(target.taskId);
+      } else {
+        // move task somewhere in the middle of the group
+        const leftTaskId =
+          taskIds[
+            target.index > destination.index
+              ? destination.index - 1
+              : destination.index
+          ];
+
+        const rightTaskId =
+          taskIds[
+            target.index > destination.index
+              ? destination.index
+              : destination.index + 1
+          ];
+
+        const leftTask = get().tasks[leftTaskId];
+        const rightTask = get().tasks[rightTaskId];
+
+        newPosition = (leftTask.position + rightTask.position) / 2;
+
+        newTaskIds = taskIds.filter((id) => id !== target.taskId);
+        newTaskIds = [
+          ...newTaskIds.slice(0, destination.index),
+          target.taskId,
+          ...newTaskIds.slice(destination.index),
+        ];
+      }
+
+      set((state) => {
+        const tasks = { ...state.tasks };
+        const groups = { ...state.groups };
+
+        tasks[target.taskId] = {
+          ...tasks[target.taskId],
+          position: newPosition,
+        };
+
+        groups[target.groupId] = { ...state.groups[target.groupId] };
+        groups[target.groupId].taskIds = newTaskIds;
+
+        return { tasks, groups };
+      });
+
+      return newPosition;
+    } else {
+      // moving card to another card
+      newPosition = 0;
+      newPosition = 0;
+
+      return newPosition;
+    }
   },
 
   deleteBoard: (boardId: number) => {
