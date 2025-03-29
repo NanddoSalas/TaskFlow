@@ -254,16 +254,12 @@ export const useBearStore = create<State & Actions>()((set, get) => ({
     const groupIds = get().boards[boardId].groupIds || [];
 
     if (destination.index === 0) {
-      const firstGroup = get().groups[destination.groupId].group;
-
-      newPosition = firstGroup.position - 10000;
+      newPosition = get().groups[destination.groupId].group.position - 10000;
 
       newGroupIds = groupIds.filter((id) => id !== target.groupId);
       newGroupIds.unshift(target.groupId);
     } else if (destination.index === groupIds.length - 1) {
-      const lastGroup = get().groups[groupIds[groupIds.length - 1]].group;
-
-      newPosition = lastGroup.position + 10000;
+      newPosition = get().groups[destination.groupId].group.position + 10000;
 
       newGroupIds = groupIds.filter((id) => id !== target.groupId);
       newGroupIds.push(target.groupId);
@@ -284,8 +280,6 @@ export const useBearStore = create<State & Actions>()((set, get) => ({
 
       const leftGroup = get().groups[leftGroupId].group;
       const rightGroup = get().groups[rightGroupId].group;
-
-      console.log(leftGroup.name, rightGroup.name);
 
       newPosition = (leftGroup.position + rightGroup.position) / 2;
       newGroupIds = groupIds.filter((id) => id !== target.groupId);
