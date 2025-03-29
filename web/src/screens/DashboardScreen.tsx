@@ -8,6 +8,7 @@ import { DeleteBoardDialog } from '../components/DeleteBoardDialog';
 import { DeleteGroupDialog } from '../components/DeleteGroupDialog';
 import { GroupFormDialog } from '../components/GroupFormDialog';
 import { Home } from '../components/Home';
+import { SessionExpiredDialog } from '../components/SessionExpiredDialog';
 import { TaskFormDialog } from '../components/TaskFormDialog';
 import { SidebarProvider } from '../components/ui/sidebar';
 import { useBearStore } from '../hooks/useBearStore';
@@ -36,6 +37,8 @@ export const DashboardScreen = () => {
 
   return (
     <>
+      <SessionExpiredDialog />
+
       <BoardFormDialog
         open={
           dialog.isOpen &&

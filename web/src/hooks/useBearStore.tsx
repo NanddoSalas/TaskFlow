@@ -8,6 +8,7 @@ type DialogTarget = 'board' | 'group' | 'task' | null;
 export interface State {
   idToken: string | null;
   user: User | null;
+  isSessionExpired: boolean;
   selectedBoard: number | null;
   boardIds: number[] | null;
   boards: {
@@ -38,6 +39,7 @@ export interface State {
 interface Actions {
   login: (idToken: string, user: User) => void;
   logout: () => void;
+  expireSession: () => void;
   selectBoard: (index: number | null) => void;
 
   setBoards: (boards: Board[]) => void;
@@ -74,6 +76,7 @@ interface Actions {
 export const useBearStore = create<State & Actions>()((set, get) => ({
   idToken: null,
   user: null,
+  isSessionExpired: false,
   selectedBoard: null,
   boardIds: null,
   boards: {},
@@ -94,12 +97,15 @@ export const useBearStore = create<State & Actions>()((set, get) => ({
     set({
       idToken: null,
       user: null,
+      isSessionExpired: false,
       selectedBoard: null,
       boardIds: null,
       boards: {},
       groups: {},
       tasks: {},
     }),
+
+  expireSession: () => set({ isSessionExpired: true }),
 
   selectBoard: (index: number | null) => set({ selectedBoard: index }),
 

@@ -41,11 +41,14 @@ const features = [
 
 export const WelcomeScreen = () => {
   const login = useBearStore((state) => state.login);
+  const expireSession = useBearStore((state) => state.expireSession);
 
   const handleLogin = ({ credential }: CredentialResponse) => {
     if (credential) {
       const user = getUserFromIdToken(credential);
       login(credential, user);
+
+      setTimeout(expireSession, 1000 * 60 * 55);
     }
   };
 
