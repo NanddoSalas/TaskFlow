@@ -188,9 +188,15 @@ cd server
 
 #### Spring Boot app (Docker)
 
-- Build a java artifact
+- Build a java artifact (database required for the build process)
 
 ```bash
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_NAME=taskflow
+export DB_USER=spring
+export DB_PASSWORD=password
+
 ./mvnw clean package
 ```
 
