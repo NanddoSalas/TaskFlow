@@ -192,8 +192,6 @@ cd server
 
 ```bash
 ./mvnw clean package
-
-docker build -t taskflow/server .
 ```
 
 - Dockerize artifact
