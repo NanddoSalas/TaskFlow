@@ -170,10 +170,11 @@ pnpm run dev
 Get your postgres up and running and setup the connection with the next env variables
 
 ```bash
-export DATABASE_URL=jdbc:postgresql://localhost:5432
-export DATABASE_NAME=tasflow
-export DATABASE_USER=spring
-export DATABASE_PASSWORD=password
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_NAME=taskflow
+export DB_USER=spring
+export DB_PASSWORD=password
 ```
 
 - Start Spring server
@@ -181,6 +182,36 @@ export DATABASE_PASSWORD=password
 ```bash
 cd server
 ./mvnw spring-boot:run
+```
+
+### Deployment
+
+#### Spring Boot app (Docker)
+
+- Build a java artifact
+
+```bash
+./mvnw clean package
+
+docker build -t taskflow/server .
+```
+
+- Dockerize artifact
+
+```bash
+docker build -t taskflow/server .
+```
+
+- Run docker image (remember to fill the env variables)
+
+```bash
+docker run -d -p 8080:8080 \
+  -e DB_HOST='172.17.0.1' \
+  -e DB_PORT='5432' \
+  -e DB_NAME='taskflow' \
+  -e DB_USER='spring' \
+  -e DB_PASSWORD='password' \
+  taskflow/server
 ```
 
 ## License
