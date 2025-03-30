@@ -2,7 +2,7 @@
 
 **TaskFlow** is a lightweight task management web application that allows users to create, organize, and track tasks in an intuitive kanban-style interface.
 
-[Try Demo](taskflow-demo.netlify.app)
+<a href="https://taskflow-demo.netlify.app" target="_blank">Try Demo</a>
 
 ### Features
 
