@@ -1,0 +1,18 @@
+
+services:
+
+  db:
+    image: postgres:16.8
+    environment:
+      POSTGRES_DB: taskflow
+      POSTGRES_USER: spring
+      POSTGRES_PASSWORD: password
+
+  server:
+    image: taskflow/server
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db

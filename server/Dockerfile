@@ -10,6 +10,6 @@ ENV DB_HOST=localhost
 ENV DB_PORT=5432
 ENV DB_NAME=taskflow
 ENV DB_USER=spring
-ENV DB_PASSWOR=password
+ENV DB_PASSWORD=password
 
 ENTRYPOINT ["java","-jar","server.jar"]
